@@ -6,20 +6,20 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:26:18 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/11 19:13:07 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:50:00 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IS_INTEGRAL_HPP
 # define IS_INTEGRAL_HPP
 
-template< bool Val >
-struct integral_constant_bool
+template< typename T, T Val >
+struct integral_constant
 {
 
-	static bool										value = Val;
-	typedef bool									value_type;
-	typedef struct integral_constant_bool< Val >	type;
+	static T const								value;
+	typedef T									value_type;
+	typedef struct integral_constant< T, Val >	type;
 
 	operator	value_type( void ) const
 	{
@@ -28,8 +28,11 @@ struct integral_constant_bool
 
 };
 
-typedef struct integral_constant_bool< true >	true_type;
-typedef struct integral_constant_bool< false >	false_type;
+template< typename T, T Val >
+T const integral_constant< T, Val >::value = Val;
+
+typedef struct integral_constant< bool, true >	true_type;
+typedef struct integral_constant< bool, false >	false_type;
 
 namespace ft
 {

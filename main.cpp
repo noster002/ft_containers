@@ -10,16 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.hpp"
+//#include "vector.hpp"
+#include "enable_if.hpp"
+#include "is_integral.hpp"
+#include "iterator_traits.hpp"
 #include <iostream>
 #include <iterator>
 #include <memory>
 #include <list>
+#include <vector>
 
-int	main( void )
-{
-	ft::vector< int >	v;
-	ft::vector< int >	w( v );
-	ft::vector< int >	x( 2, 3 );
-	return ( 0 );
+#include <typeinfo>     // typeid
+
+int main() {
+  typedef ft::iterator_traits<int*> traits;
+  if (typeid(traits::iterator_category)==typeid(std::random_access_iterator_tag))
+    std::cout << "int* is a random-access iterator " << std::endl;
+  return 0;
 }
