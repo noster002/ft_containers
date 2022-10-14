@@ -13,7 +13,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 # include "VectorBase.hpp"
-# include <iterator>
+# include "Vector_iterator.hpp"
 # include <limits>
 
 namespace ft
@@ -25,88 +25,18 @@ namespace ft
 
 		public:
 
-		typedef T											value_type;
-		typedef Allocator									allocator_type;
-		typedef typename allocator_type::reference			reference;
-		typedef typename allocator_type::const_reference	const_reference;
-		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef typename std::ptrdiff_t						difference_type;
-		typedef typename std::size_t						size_type;
-
-		struct iterator
-		{
-
-			public:
-
-				typedef typename std::random_access_iterator_tag	iterator_category;
-				typedef typename std::ptrdiff_t						difference_type;
-				typedef T											value_type;
-				typedef value_type*									pointer;
-				typedef value_type&									reference;
-
-				iterator( pointer ptr )\
-				 : m_ptr( ptr )
-				{
-					return ;
-				}
-				iterator( iterator const & other )\
-				 : m_ptr( other.m_ptr )
-				{
-					return ;
-				}
-				~iterator( void )
-				{
-					return ;
-				}
-				iterator&	operator=( iterator const & rhs )
-				{
-					this->m_ptr = rhs.m_ptr;
-					return ( *this );
-				}
-
-				reference	operator*( void ) const
-				{
-					return ( *( this->m_ptr ) );
-				}
-				pointer		operator->( void )
-				{
-					return ( this->m_ptr );
-				}
-
-				iterator&	operator++( void )
-				{
-					++( this->m_ptr );
-					return ( *this );
-				}
-				iterator&	operator--( void )
-				{
-					--( this->m_ptr );
-					return ( *this );
-				}
-				iterator	operator++( int )
-				{
-					iterator	tmp( *this );
-					++( *this );
-					return ( tmp );
-				}
-				iterator	operator--( int )
-				{
-					iterator	tmp( *this );
-					--( *this );
-					return ( tmp );
-				}
-
-			private:
-
-				pointer	m_ptr;
-
-		};
-
-		typedef struct iterator										iterator;
-		typedef iterator const										const_iterator;
-		typedef typename std::reverse_iterator< iterator >			reverse_iterator;
-		typedef typename std::reverse_iterator< const_iterator >	const_reverse_iterator;
+		typedef T															value_type;
+		typedef Allocator													allocator_type;
+		typedef typename allocator_type::reference							reference;
+		typedef typename allocator_type::const_reference					const_reference;
+		typedef typename allocator_type::pointer							pointer;
+		typedef typename allocator_type::const_pointer						const_pointer;
+		typedef struct iterator< T >										iterator;
+		typedef struct iterator< T const >									const_iterator;
+		typedef typename ft::reverse_iterator< iterator >					reverse_iterator;
+		typedef typename ft::reverse_iterator< const_iterator >				const_reverse_iterator;
+		typedef typename ft::iterator_traits< iterator >::difference_type	difference_type;
+		typedef typename std::size_t										size_type;
 
 		vector( void )\
 		 : VectorBase< T, Allocator >()

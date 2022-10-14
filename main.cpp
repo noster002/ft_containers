@@ -14,17 +14,24 @@
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 #include "iterator_traits.hpp"
+#include "pair.hpp"
+#include "make_pair.hpp"
 #include <iostream>
 #include <iterator>
 #include <memory>
 #include <list>
 #include <vector>
 
-#include <typeinfo>     // typeid
+int	main( void )
+{
+	std::vector< int >				vi( 3, 5 );
+	std::vector< float >			vf( 3, 2.5 );
+	std::vector< int >::iterator	it_vi = vi.begin();
+	vf[0] = 3.2;
+	std::vector< float >::iterator	it_vf = vf.begin();
+	std::vector< int >::iterator	it_vi2;
 
-int main() {
-  typedef ft::iterator_traits<int*> traits;
-  if (typeid(traits::iterator_category)==typeid(std::random_access_iterator_tag))
-    std::cout << "int* is a random-access iterator " << std::endl;
-  return 0;
+	std::cout << "it_vi.base(): " << *it_vi.base() << std::endl;
+	std::cout << "it_vf.base(): " << *it_vf.base() << std::endl;
+	return ( 0 );
 }
