@@ -14,6 +14,8 @@
 # define VECTOR_HPP
 # include "VectorBase.hpp"
 # include "Vector_iterator.hpp"
+# include "reverse_iterator.hpp"
+# include "iterator_traits.hpp"
 # include <limits>
 
 namespace ft

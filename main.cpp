@@ -24,14 +24,11 @@
 
 int	main( void )
 {
-	std::vector< int >				vi( 3, 5 );
-	std::vector< float >			vf( 3, 2.5 );
-	std::vector< int >::iterator	it_vi = vi.begin();
-	vf[0] = 3.2;
-	std::vector< float >::iterator	it_vf = vf.begin();
-	std::vector< int >::iterator	it_vi2;
+	char	c( 'c' );
+	char	d( 'd' );
+	char*	c_ptr = &c;
+	char*	d_ptr = &d;
 
-	std::cout << "it_vi.base(): " << *it_vi.base() << std::endl;
-	std::cout << "it_vf.base(): " << *it_vf.base() << std::endl;
+	std::cout << "Address c: " << ( void* )c_ptr << std::endl << "Address d: " << ( void* )d_ptr << std::endl;
 	return ( 0 );
 }

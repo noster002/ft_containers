@@ -6,12 +6,13 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:28:38 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/14 16:04:44 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/16 22:40:39 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVERSE_ITERATOR_HPP
 # define REVERSE_ITERATOR_HPP
+# include "iterator_traits.hpp"
 
 namespace ft
 {
