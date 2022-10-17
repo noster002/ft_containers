@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:43:25 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/14 16:43:58 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:22:15 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
 		first_type		first;
 		second_type		second;
 
-		pair( void ) : first( 0 ), second( 0 )
+		pair( void ) : first( first_type() ), second( second_type() )
 		{
 			return ;
 		}

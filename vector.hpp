@@ -33,8 +33,8 @@ namespace ft
 		typedef typename allocator_type::const_reference					const_reference;
 		typedef typename allocator_type::pointer							pointer;
 		typedef typename allocator_type::const_pointer						const_pointer;
-		typedef struct iterator< T >										iterator;
-		typedef struct iterator< T const >									const_iterator;
+		typedef struct iterator< pointer, vector >							iterator;
+		typedef struct iterator< const_pointer, vector >					const_iterator;
 		typedef typename ft::reverse_iterator< iterator >					reverse_iterator;
 		typedef typename ft::reverse_iterator< const_iterator >				const_reverse_iterator;
 		typedef typename ft::iterator_traits< iterator >::difference_type	difference_type;

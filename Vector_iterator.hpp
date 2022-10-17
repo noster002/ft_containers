@@ -1,37 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_iterator.hpp                                :+:      :+:    :+:   */
+/*   Vector_iterator.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 17:49:39 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/14 18:32:54 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:51:32 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_ITERATOR_HPP
 # define VECTOR_ITERATOR_HPP
+# include "iterator_traits.hpp"
+# include "is_integral.hpp"
 
-template< typename Val >
+template< typename Iterator, typename Container >
 struct iterator
 {
 
+	protected:
+
+		Iterator	m_current;
+
 	public:
 
-		typedef typename std::random_access_iterator_tag	iterator_category;
-		typedef typename std::ptrdiff_t						difference_type;
-		typedef T											value_type;
-		typedef value_type*									pointer;
-		typedef value_type&									reference;
+		typedef typename ft::iterator_traits< Iterator >::difference_type\
+			difference_type;
+		typedef typename ft::iterator_traits< Iterator >::value_type\
+			value_type;
+		typedef typename ft::iterator_traits< Iterator >::pointer\
+			pointer;
+		typedef typename ft::iterator_traits< Iterator >::reference\
+			reference;
+		typedef typename ft::iterator_traits< Iterator >::iterator_category\
+			iterator_category;
 
-		iterator( pointer ptr )\
-		 : m_ptr( ptr )
+		iterator( void )\
+		 : m_current( Iterator() )
 		{
 			return ;
 		}
-		iterator( iterator const & other )\
-		 : m_ptr( other.m_ptr )
+		explicit iterator( Iterator const & it )\
+		 : m_current( it )
+		{
+			return ;
+		}
+		template< typename Iter >
+		iterator( iterator< Iter, \
+			typename ft::enable_if< \
+			( is_same< Iter, typename Container::pointer >::value ), \
+			Container>::type> const & it )\
+		 : m_current( i.base() )
 		{
 			return ;
 		}
@@ -39,34 +59,34 @@ struct iterator
 		{
 			return ;
 		}
-		iterator&	operator=( iterator const & rhs )
+		iterator< value_type >&	operator=( iterator< value_type > const & rhs )
 		{
-			this->m_ptr = rhs.m_ptr;
+			this->m_current = rhs.m_current;
 			return ( *this );
 		}
 
 		pointer		base( void ) const
 		{
-			return ( this->m_ptr );
+			return ( this->m_current );
 		}
 
 		reference	operator*( void ) const
 		{
-			return ( *( this->m_ptr ) );
+			return ( *( this->m_current ) );
 		}
 		pointer		operator->( void )
 		{
-			return ( this->m_ptr );
+			return ( this->m_current );
 		}
 
 		iterator&	operator++( void )
 		{
-			++( this->m_ptr );
+			++( this->m_current );
 			return ( *this );
 		}
 		iterator&	operator--( void )
 		{
-			--( this->m_ptr );
+			--( this->m_current );
 			return ( *this );
 		}
 		iterator	operator++( int )
@@ -87,9 +107,13 @@ struct iterator
 		friend bool	operator!=( iterator const & it1, \
 								iterator const & it2 );
 
-	protected:
+	private:
 
-		pointer	m_ptr;
+		template< typename T, typename U >
+		struct is_same : public false_type {};
+
+		template< typename T >
+		struct is_same< T, T > : public true_type{};
 
 };
 

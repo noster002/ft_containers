@@ -24,11 +24,12 @@
 
 int	main( void )
 {
-	char	c( 'c' );
-	char	d( 'd' );
-	char*	c_ptr = &c;
-	char*	d_ptr = &d;
+	std::vector< int >					vi( 2, 2 );
+	std::vector< int >::iterator		it_vi = vi.begin();
+	std::vector< int >::const_iterator	cit_vi = it_vi;
+	std::vector< int >::const_iterator	cit_vi2 = cit_vi;
+	std::vector< int >::iterator		it_vi2 = it_vi;
 
-	std::cout << "Address c: " << ( void* )c_ptr << std::endl << "Address d: " << ( void* )d_ptr << std::endl;
+	std::cout << *cit_vi2 << *it_vi2 << std::endl;
 	return ( 0 );
 }
