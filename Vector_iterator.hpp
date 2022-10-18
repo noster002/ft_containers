@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 17:49:39 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/17 19:51:32 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:54:32 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ struct iterator
 
 	public:
 
+		// naming policy
+
 		typedef typename ft::iterator_traits< Iterator >::difference_type\
 			difference_type;
 		typedef typename ft::iterator_traits< Iterator >::value_type\
@@ -35,6 +37,8 @@ struct iterator
 			reference;
 		typedef typename ft::iterator_traits< Iterator >::iterator_category\
 			iterator_category;
+
+		// constructors, destructor, assignment
 
 		iterator( void )\
 		 : m_current( Iterator() )
@@ -48,10 +52,8 @@ struct iterator
 		}
 		template< typename Iter >
 		iterator( iterator< Iter, \
-			typename ft::enable_if< \
-			( is_same< Iter, typename Container::pointer >::value ), \
-			Container>::type> const & it )\
-		 : m_current( i.base() )
+			typename ft::enable_if< ( is_same< Iter, typename Container::pointer >::value ), Container>::type> const & it )\
+		 : m_current( it.base() )
 		{
 			return ;
 		}
@@ -59,25 +61,31 @@ struct iterator
 		{
 			return ;
 		}
-		iterator< value_type >&	operator=( iterator< value_type > const & rhs )
+		iterator&	operator=( iterator const & rhs )
 		{
 			this->m_current = rhs.m_current;
 			return ( *this );
 		}
+
+		// accessor
 
 		pointer		base( void ) const
 		{
 			return ( this->m_current );
 		}
 
+		// derefencable
+
 		reference	operator*( void ) const
 		{
 			return ( *( this->m_current ) );
 		}
-		pointer		operator->( void )
+		pointer		operator->( void ) const
 		{
 			return ( this->m_current );
 		}
+
+		// increment & decrement
 
 		iterator&	operator++( void )
 		{
@@ -102,10 +110,30 @@ struct iterator
 			return ( tmp );
 		}
 
-		friend bool	operator==( iterator const & it1, \
-								iterator const & it2 );
-		friend bool	operator!=( iterator const & it1, \
-								iterator const & it2 );
+		// random access
+
+		iterator&	operator+=( difference_type const & n )
+		{
+			this->m_current += n;
+			return ( *this );
+		}
+		iterator&	operator-=( difference_type const & n )
+		{
+			this->m_current -= n;
+			return ( *this );
+		}
+		iterator	operator+( difference_type const & n ) const
+		{
+			return ( iterator( this->m_current + n ) );
+		}
+		iterator	operator-( difference_type const & n ) const
+		{
+			return ( iterator( this->m_current - n ) );
+		}
+		reference	operator[]( difference_type const & n ) const
+		{
+			return ( this->m_current[n] );
+		}
 
 	private:
 
@@ -117,18 +145,108 @@ struct iterator
 
 };
 
-template< typename Val >
-bool	operator==( iterator< Val > const & it1, \
-					iterator< Val > const & it2 )
+// compare
+
+template< typename IteratorL, typename IteratorR, typename Container >
+inline bool	operator==( iterator< IteratorL, Container > const & lhs, \
+						iterator< IteratorR, Container > const & rhs )
 {
-	return ( it1.base() == it2.base() );
+	return ( lhs.base() == rhs.base() );
+}
+template< typename Iterator, typename Container >
+inline bool	operator==( iterator< Iterator, Container > const & lhs, \
+						iterator< Iterator, Container > const & rhs )
+{
+	return ( lhs.base() == rhs.base() );
+}
+template< typename IteratorL, typename IteratorR, typename Container >
+inline bool	operator!=( iterator< IteratorL, Container > const & lhs, \
+						iterator< IteratorR, Container > const & rhs )
+{
+	return ( lhs.base() != rhs.base() );
+}
+template< typename Iterator, typename Container >
+inline bool	operator!=( iterator< Iterator, Container > const & lhs, \
+						iterator< Iterator, Container > const & rhs )
+{
+	return ( lhs.base() != rhs.base() );
 }
 
-template< typename Val >
-bool	operator!=( iterator< Val > const & it1, \
-					iterator< Val > const & it2 )
+template< typename IteratorL, typename IteratorR, typename Container >
+inline bool	operator<( iterator< IteratorL, Container > const & lhs, \
+					   iterator< IteratorR, Container > const & rhs )
 {
-	return ( !( it1.base() == it2.base() ) );
+	return ( lhs.base() < rhs.base() );
+}
+template< typename Iterator, typename Container >
+inline bool	operator<( iterator< Iterator, Container > const & lhs, \
+					   iterator< Iterator, Container > const & rhs )
+{
+	return ( lhs.base() < rhs.base() );
+}
+template< typename IteratorL, typename IteratorR, typename Container >
+inline bool	operator>( iterator< IteratorL, Container > const & lhs, \
+					   iterator< IteratorR, Container > const & rhs )
+{
+	return ( lhs.base() > rhs.base() );
+}
+template< typename Iterator, typename Container >
+inline bool	operator>( iterator< Iterator, Container > const & lhs, \
+					   iterator< Iterator, Container > const & rhs )
+{
+	return ( lhs.base() > rhs.base() );
+}
+template< typename IteratorL, typename IteratorR, typename Container >
+inline bool	operator<=( iterator< IteratorL, Container > const & lhs, \
+						iterator< IteratorR, Container > const & rhs )
+{
+	return ( lhs.base() <= rhs.base() );
+}
+template< typename Iterator, typename Container >
+inline bool	operator<=( iterator< Iterator, Container > const & lhs, \
+						iterator< Iterator, Container > const & rhs )
+{
+	return ( lhs.base() <= rhs.base() );
+}
+template< typename IteratorL, typename IteratorR, typename Container >
+inline bool	operator>=( iterator< IteratorL, Container > const & lhs, \
+						iterator< IteratorR, Container > const & rhs )
+{
+	return ( lhs.base() >= rhs.base() );
+}
+template< typename Iterator, typename Container >
+inline bool	operator>=( iterator< Iterator, Container > const & lhs, \
+						iterator< Iterator, Container > const & rhs )
+{
+	return ( lhs.base() >= rhs.base() );
+}
+
+// difference
+
+template< typename IteratorL, typename IteratorR, typename Container >
+inline typename iterator< IteratorL, Container >::difference_type\
+	operator-( iterator< IteratorL, Container > const & lhs, \
+			   iterator< IteratorR, Container > const & rhs )
+{
+	return ( lhs.base() - rhs.base() );
+}
+template< typename Iterator, typename Container >
+inline typename iterator< Iterator, Container >::difference_type\
+	operator-( iterator< Iterator, Container > const & lhs, \
+			   iterator< Iterator, Container > const & rhs )
+{
+	return ( lhs.base() - rhs.base() );
+}
+
+// rvalue operation
+
+template< typename Iterator, typename Container >
+inline iterator< Iterator, Container >\
+	operator+( typename iterator< Iterator, Container >\
+					::difference_type const & n, \
+			   iterator< Iterator, Container > const & it )
+{
+	return ( iterator< Iterator, Container >( it.base() + n ) );
 }
 
 #endif

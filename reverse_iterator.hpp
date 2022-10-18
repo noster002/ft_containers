@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:28:38 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/17 19:21:59 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:06:29 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
 		typedef typename ft::iterator_traits< Iterator >::pointer			pointer;
 		typedef typename ft::iterator_traits< Iterator >::reference			reference;
 
-		reverse_iterator( void ) : current( Iterator() )
+		reverse_iterator( void ) : current()
 		{
 			return ;
 		}

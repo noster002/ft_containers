@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "vector.hpp"
+#include "vector.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 #include "iterator_traits.hpp"
@@ -24,12 +24,17 @@
 
 int	main( void )
 {
-	std::vector< int >					vi( 2, 2 );
-	std::vector< int >::iterator		it_vi = vi.begin();
-	std::vector< int >::const_iterator	cit_vi = it_vi;
-	std::vector< int >::const_iterator	cit_vi2 = cit_vi;
-	std::vector< int >::iterator		it_vi2 = it_vi;
+	ft::vector< int >					vi( 2, 2 );
+	ft::vector< int >::iterator		it_vi = vi.begin();
+	ft::vector< int >::const_iterator	cit_vi = it_vi;
+	ft::vector< int >::const_iterator	cit_vi2 = cit_vi;
+	ft::vector< int >::iterator		it_vi2 = it_vi;
+	ft::vector< int >::const_iterator	cit_vi3;
+	cit_vi3 = 1 + cit_vi;
 
-	std::cout << *cit_vi2 << *it_vi2 << std::endl;
+	if ( cit_vi2 == cit_vi )
+		std::cout << "cit_vi3 - it_vi2 = " << ( cit_vi3 - it_vi2 ) << std::endl;
+	( void )cit_vi2;
+	( void )it_vi2;
 	return ( 0 );
 }
