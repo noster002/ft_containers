@@ -25,10 +25,10 @@
 int	main( void )
 {
 	ft::vector< int >					vi( 2, 2 );
-	ft::vector< int >::iterator		it_vi = vi.begin();
+	ft::vector< int >::iterator			it_vi = vi.begin();
 	ft::vector< int >::const_iterator	cit_vi = it_vi;
 	ft::vector< int >::const_iterator	cit_vi2 = cit_vi;
-	ft::vector< int >::iterator		it_vi2 = it_vi;
+	ft::vector< int >::iterator			it_vi2 = it_vi;
 	ft::vector< int >::const_iterator	cit_vi3;
 	cit_vi3 = 1 + cit_vi;
 

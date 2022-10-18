@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Vector_iterator.hpp                                :+:      :+:    :+:   */
+/*   IteratorBase.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/14 17:49:39 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/18 14:54:32 by nosterme         ###   ########.fr       */
+/*   Created: 2022/10/18 21:05:00 by nosterme          #+#    #+#             */
+/*   Updated: 2022/10/18 21:06:37 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_ITERATOR_HPP
-# define VECTOR_ITERATOR_HPP
+#ifndef ITERATORBASE_HPP
+# define ITERATORBASE_HPP
 # include "iterator_traits.hpp"
 # include "is_integral.hpp"
+# include "enable_if.hpp"
 
 template< typename Iterator, typename Container >
-struct iterator
+struct IteratorBase
 {
 
 	protected:
 
 		Iterator	m_current;
+
+	private:
+
+		template< typename T, typename U >
+		struct is_same : public false_type {};
+
+		template< typename T >
+		struct is_same< T, T > : public true_type {};
 
 	public:
 
@@ -40,28 +49,27 @@ struct iterator
 
 		// constructors, destructor, assignment
 
-		iterator( void )\
+		IteratorBase( void )\
 		 : m_current( Iterator() )
 		{
 			return ;
 		}
-		explicit iterator( Iterator const & it )\
+		explicit IteratorBase( Iterator const & it )\
 		 : m_current( it )
 		{
 			return ;
 		}
 		template< typename Iter >
-		iterator( iterator< Iter, \
-			typename ft::enable_if< ( is_same< Iter, typename Container::pointer >::value ), Container>::type> const & it )\
+		IteratorBase( IteratorBase< Iter, typename ft::enable_if< is_same< Iter, typename Container::pointer >::value , Container>::type> const & it )\
 		 : m_current( it.base() )
 		{
 			return ;
 		}
-		~iterator( void )
+		~IteratorBase( void )
 		{
 			return ;
 		}
-		iterator&	operator=( iterator const & rhs )
+		IteratorBase&	operator=( IteratorBase const & rhs )
 		{
 			this->m_current = rhs.m_current;
 			return ( *this );
@@ -87,136 +95,128 @@ struct iterator
 
 		// increment & decrement
 
-		iterator&	operator++( void )
+		IteratorBase&	operator++( void )
 		{
 			++( this->m_current );
 			return ( *this );
 		}
-		iterator&	operator--( void )
+		IteratorBase&	operator--( void )
 		{
 			--( this->m_current );
 			return ( *this );
 		}
-		iterator	operator++( int )
+		IteratorBase	operator++( int )
 		{
-			iterator	tmp( *this );
+			IteratorBase	tmp( *this );
 			++( *this );
 			return ( tmp );
 		}
-		iterator	operator--( int )
+		IteratorBase	operator--( int )
 		{
-			iterator	tmp( *this );
+			IteratorBase	tmp( *this );
 			--( *this );
 			return ( tmp );
 		}
 
 		// random access
 
-		iterator&	operator+=( difference_type const & n )
+		IteratorBase&	operator+=( difference_type const & n )
 		{
 			this->m_current += n;
 			return ( *this );
 		}
-		iterator&	operator-=( difference_type const & n )
+		IteratorBase&	operator-=( difference_type const & n )
 		{
 			this->m_current -= n;
 			return ( *this );
 		}
-		iterator	operator+( difference_type const & n ) const
+		IteratorBase	operator+( difference_type const & n ) const
 		{
-			return ( iterator( this->m_current + n ) );
+			return ( IteratorBase( this->m_current + n ) );
 		}
-		iterator	operator-( difference_type const & n ) const
+		IteratorBase	operator-( difference_type const & n ) const
 		{
-			return ( iterator( this->m_current - n ) );
+			return ( IteratorBase( this->m_current - n ) );
 		}
-		reference	operator[]( difference_type const & n ) const
+		reference		operator[]( difference_type const & n ) const
 		{
 			return ( this->m_current[n] );
 		}
-
-	private:
-
-		template< typename T, typename U >
-		struct is_same : public false_type {};
-
-		template< typename T >
-		struct is_same< T, T > : public true_type{};
 
 };
 
 // compare
 
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator==( iterator< IteratorL, Container > const & lhs, \
-						iterator< IteratorR, Container > const & rhs )
+inline bool	operator==( IteratorBase< IteratorL, Container > const & lhs, \
+						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() == rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator==( iterator< Iterator, Container > const & lhs, \
-						iterator< Iterator, Container > const & rhs )
+inline bool	operator==( IteratorBase< Iterator, Container > const & lhs, \
+						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() == rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator!=( iterator< IteratorL, Container > const & lhs, \
-						iterator< IteratorR, Container > const & rhs )
+inline bool	operator!=( IteratorBase< IteratorL, Container > const & lhs, \
+						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() != rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator!=( iterator< Iterator, Container > const & lhs, \
-						iterator< Iterator, Container > const & rhs )
+inline bool	operator!=( IteratorBase< Iterator, Container > const & lhs, \
+						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() != rhs.base() );
 }
 
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator<( iterator< IteratorL, Container > const & lhs, \
-					   iterator< IteratorR, Container > const & rhs )
+inline bool	operator<( IteratorBase< IteratorL, Container > const & lhs, \
+					   IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() < rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator<( iterator< Iterator, Container > const & lhs, \
-					   iterator< Iterator, Container > const & rhs )
+inline bool	operator<( IteratorBase< Iterator, Container > const & lhs, \
+					   IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() < rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator>( iterator< IteratorL, Container > const & lhs, \
-					   iterator< IteratorR, Container > const & rhs )
+inline bool	operator>( IteratorBase< IteratorL, Container > const & lhs, \
+					   IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() > rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator>( iterator< Iterator, Container > const & lhs, \
-					   iterator< Iterator, Container > const & rhs )
+inline bool	operator>( IteratorBase< Iterator, Container > const & lhs, \
+					   IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() > rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator<=( iterator< IteratorL, Container > const & lhs, \
-						iterator< IteratorR, Container > const & rhs )
+inline bool	operator<=( IteratorBase< IteratorL, Container > const & lhs, \
+						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() <= rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator<=( iterator< Iterator, Container > const & lhs, \
-						iterator< Iterator, Container > const & rhs )
+inline bool	operator<=( IteratorBase< Iterator, Container > const & lhs, \
+						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() <= rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator>=( iterator< IteratorL, Container > const & lhs, \
-						iterator< IteratorR, Container > const & rhs )
+inline bool	operator>=( IteratorBase< IteratorL, Container > const & lhs, \
+						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() >= rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator>=( iterator< Iterator, Container > const & lhs, \
-						iterator< Iterator, Container > const & rhs )
+inline bool	operator>=( IteratorBase< Iterator, Container > const & lhs, \
+						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() >= rhs.base() );
 }
@@ -224,16 +224,16 @@ inline bool	operator>=( iterator< Iterator, Container > const & lhs, \
 // difference
 
 template< typename IteratorL, typename IteratorR, typename Container >
-inline typename iterator< IteratorL, Container >::difference_type\
-	operator-( iterator< IteratorL, Container > const & lhs, \
-			   iterator< IteratorR, Container > const & rhs )
+inline typename IteratorBase< IteratorL, Container >::difference_type\
+	operator-( IteratorBase< IteratorL, Container > const & lhs, \
+			   IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() - rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline typename iterator< Iterator, Container >::difference_type\
-	operator-( iterator< Iterator, Container > const & lhs, \
-			   iterator< Iterator, Container > const & rhs )
+inline typename IteratorBase< Iterator, Container >::difference_type\
+	operator-( IteratorBase< Iterator, Container > const & lhs, \
+			   IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() - rhs.base() );
 }
@@ -241,12 +241,12 @@ inline typename iterator< Iterator, Container >::difference_type\
 // rvalue operation
 
 template< typename Iterator, typename Container >
-inline iterator< Iterator, Container >\
-	operator+( typename iterator< Iterator, Container >\
+inline IteratorBase< Iterator, Container >\
+	operator+( typename IteratorBase< Iterator, Container >\
 					::difference_type const & n, \
-			   iterator< Iterator, Container > const & it )
+			   IteratorBase< Iterator, Container > const & it )
 {
-	return ( iterator< Iterator, Container >( it.base() + n ) );
+	return ( IteratorBase< Iterator, Container >( it.base() + n ) );
 }
 
 #endif

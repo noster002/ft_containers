@@ -13,7 +13,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 # include "VectorBase.hpp"
-# include "Vector_iterator.hpp"
+# include "IteratorBase.hpp"
 # include "reverse_iterator.hpp"
 # include "iterator_traits.hpp"
 # include <limits>
@@ -33,8 +33,8 @@ namespace ft
 		typedef typename allocator_type::const_reference					const_reference;
 		typedef typename allocator_type::pointer							pointer;
 		typedef typename allocator_type::const_pointer						const_pointer;
-		typedef struct iterator< pointer, vector >							iterator;
-		typedef struct iterator< const_pointer, vector >					const_iterator;
+		typedef IteratorBase< pointer, vector >								iterator;
+		typedef IteratorBase< const_pointer, vector >						const_iterator;
 		typedef typename ft::reverse_iterator< iterator >					reverse_iterator;
 		typedef typename ft::reverse_iterator< const_iterator >				const_reverse_iterator;
 		typedef typename ft::iterator_traits< iterator >::difference_type	difference_type;
@@ -58,7 +58,7 @@ namespace ft
 			defaultInitialize( count, value );
 			return ;
 		}
-		template< typename InputIterator >
+		/*template< typename InputIterator >
 		vector( InputIterator first, InputIterator last, \
 				allocator_type const & alloc = allocator_type() )\
 		 : VectorBase< T, Allocator >( alloc )
@@ -70,7 +70,7 @@ namespace ft
 				iteratorPreInitialize( static_cast< typename ft::vector< T, Allocator >::iterator >( first ), \
 									static_cast< typename ft::vector< T, Allocator >::iterator >( last ) );
 			return ;
-		}
+		}*/
 		vector( vector const & other )\
 		 : VectorBase< T, Allocator >( other.size(), other.get_allocator() )
 		{
