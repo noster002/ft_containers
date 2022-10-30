@@ -155,7 +155,7 @@ namespace ft
 			{
 				if ( n >= this->size() )
 				{
-					char	buffer[256];
+					char	buffer[1024];
 
 					sprintf( buffer, "vector::_M_range_check: __n (which is %lu)"
 									 " >= this->size() (which is %lu)", \
@@ -168,13 +168,14 @@ namespace ft
 			{
 				if ( n >= this->size() )
 				{
-					char	buffer[256];
+					char	buffer[1024];
 
 					sprintf( buffer, "vector::_M_range_check: __n (which is %lu)"
 									 " >= this->size() (which is %lu)", \
 									 n, this->size() );
 					throw std::out_of_range( buffer );
-				}				return ( ( *this )[n] );
+				}
+				return ( ( *this )[n] );
 			}
 			reference			operator[]( size_type n )
 			{
@@ -413,7 +414,7 @@ namespace ft
 				if ( count <= this->size() )
 					this->erase( ( this->begin() + count ), this->end() );
 				else if ( count > this->size() )
-					this->insert( ( this->end() - 1 ), \
+					this->insert( ( this->end() ), \
 								  ( count - this->size() ), value );
 				return ;
 			}
