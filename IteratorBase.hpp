@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 21:05:00 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/18 21:06:37 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:52:25 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "iterator_traits.hpp"
 # include "is_integral.hpp"
 # include "enable_if.hpp"
+# include <iostream>
 
 template< typename Iterator, typename Container >
 struct IteratorBase
@@ -24,28 +25,15 @@ struct IteratorBase
 
 		Iterator	m_current;
 
-	private:
-
-		template< typename T, typename U >
-		struct is_same : public false_type {};
-
-		template< typename T >
-		struct is_same< T, T > : public true_type {};
-
 	public:
 
 		// naming policy
 
-		typedef typename ft::iterator_traits< Iterator >::difference_type\
-			difference_type;
-		typedef typename ft::iterator_traits< Iterator >::value_type\
-			value_type;
-		typedef typename ft::iterator_traits< Iterator >::pointer\
-			pointer;
-		typedef typename ft::iterator_traits< Iterator >::reference\
-			reference;
-		typedef typename ft::iterator_traits< Iterator >::iterator_category\
-			iterator_category;
+		typedef typename ft::iterator_traits< Iterator >::difference_type	difference_type;
+		typedef typename ft::iterator_traits< Iterator >::value_type		value_type;
+		typedef typename ft::iterator_traits< Iterator >::pointer			pointer;
+		typedef typename ft::iterator_traits< Iterator >::reference			reference;
+		typedef typename ft::iterator_traits< Iterator >::iterator_category	iterator_category;
 
 		// constructors, destructor, assignment
 
@@ -60,7 +48,9 @@ struct IteratorBase
 			return ;
 		}
 		template< typename Iter >
-		IteratorBase( IteratorBase< Iter, typename ft::enable_if< is_same< Iter, typename Container::pointer >::value , Container>::type> const & it )\
+		IteratorBase( IteratorBase< Iter, typename ft::enable_if< \
+					  ( is_same< Iter, typename Container::pointer >::value ), \
+					  Container >::type > const & it )\
 		 : m_current( it.base() )
 		{
 			return ;

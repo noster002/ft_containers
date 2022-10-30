@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:20:20 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/14 15:36:54 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/25 15:16:29 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ namespace ft
 				return ( false );
 			else if ( *first1 < *first2 )
 				return ( true );
+			++first1;
+			++first2;
 		}
 		return ( first2 != last2 );
 	}
@@ -41,6 +43,8 @@ namespace ft
 				return ( false );
 			else if ( comp( *first1, *first2 ) )
 				return ( true );
+			++first1;
+			++first2;
 		}
 		return ( first2 != last2 );
 	}

@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:26:18 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/12 14:50:00 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:43:46 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,20 @@ namespace ft
 	template<> struct is_integral< signed char > : public true_type {};
 	template<> struct is_integral< unsigned char > : public true_type {};
 
-	template<> struct is_integral< short int > : public true_type {};
+	template<> struct is_integral< short > : public true_type {};
 	template<> struct is_integral< int > : public true_type {};
-	template<> struct is_integral< long int > : public true_type {};
+	template<> struct is_integral< long > : public true_type {};
 
-	template<> struct is_integral< unsigned short int > : public true_type {};
+	template<> struct is_integral< unsigned short > : public true_type {};
 	template<> struct is_integral< unsigned int > : public true_type {};
-	template<> struct is_integral< unsigned long int > : public true_type {};
+	template<> struct is_integral< unsigned long > : public true_type {};
 
 }
+
+template< typename T, typename U >
+struct is_same : public false_type {};
+
+template< typename T >
+struct is_same< T, T > : public true_type {};
 
 #endif
