@@ -348,9 +348,9 @@ namespace ft
 								!( ft::is_integral< InputIterator >::value ), \
 								bool >::type* = NULL )
 			{
-				difference_type	distance = ( position - this->begin() );
-				size_type		count = size_type( std::distance( first, last ) );
-				size_type		new_storage = ( 2 * this->capacity() );
+				difference_type				distance = ( position - this->begin() );
+				size_type					count = size_type( std::distance( first, last ) );
+				size_type					new_storage = ( 2 * this->capacity() );
 
 				if ( count == 0 )
 					return ;
@@ -372,6 +372,11 @@ namespace ft
 				while ( ( insert != ( new_position + count ) ) && \
 						( first != last ) )
 				{
+					if ( &( *( first ) ) == &( *( new_position ) ) )
+					{
+						first += count;
+						last += count;
+					}
 					this->m_alloc.construct( &( *( insert ) ), *first );
 					++insert;
 					++first;

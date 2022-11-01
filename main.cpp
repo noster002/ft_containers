@@ -25,8 +25,186 @@
 #include "tests/myallocator.hpp"
 #include "tests/mystruct.hpp"
 
+template< typename T >
+void	vector_check_sizes( ft::vector< T > const & v )
+{
+	std::cout << "v.size(): " << v.size() << std::endl;
+	std::cout << "v.capacity(): " << v.capacity() << std::endl;
+	std::cout << "v.max_size(): " << v.max_size() << std::endl;
+
+	return ;
+}
+
+template< typename T >
+void	vector_operator_check( ft::vector< T > const & v )
+{
+	vector_check_sizes( v );
+	for ( std::size_t	count = 0; count < v.size(); ++count )
+		std::cout << v[ count ] << " ";
+	std::cout << std::endl;
+
+	return ;
+}
+
+template< typename T >
+void	vector_iterator_check( ft::vector< T > & v )
+{
+	vector_check_sizes( v );
+	for ( typename ft::vector< T >::iterator it = v.begin(); it != v.end(); ++it )
+		std::cout << *it << " ";
+	std::cout << std::endl;
+
+	return ;
+}
+
 int	main( void )
 {
+
+	{
+		std::allocator< int >											alloc;
+		myallocator< int >												myalloc;
+		my_pointer_struct												pts;
+		myallocator< my_pointer_struct >								alloc_pts;
+
+		ft::vector< char >												v_char;
+		ft::vector< wchar_t, std::allocator< wchar_t > >				v_wchar_t;
+		ft::vector< signed char, std::allocator< signed char > >		v_signed_char;
+		ft::vector< unsigned char, myallocator< unsigned char > >		v_unsigned_char;
+		ft::vector< short, myallocator< short > >						v_short;
+		ft::vector< int >												v_int( alloc );
+		ft::vector< long, myallocator< long > >							v_long( myalloc );
+		ft::vector< unsigned short >									v_unsigned_short( alloc );
+		ft::vector< unsigned int, myallocator< unsigned int > >			v_unsigned_int( myalloc );
+		ft::vector< unsigned long, std::allocator< unsigned long > >	v_unsigned_long( alloc );
+		ft::vector< float, myallocator< float > >						v_float( myalloc );
+		ft::vector< double >											v_double( 4 );
+		ft::vector< long double, myallocator< long double > >			v_long_double( 2, 3.14159 );
+		ft::vector< void * >											v_void_p( 3, static_cast< void * >( &v_short ) );
+		ft::vector< void const * >										v_void_const_p( 2, NULL, std::allocator< void const * >() );
+		ft::vector< my_empty_struct, myallocator< my_empty_struct > >	v_my_empty_struct( 3, my_empty_struct() );
+		ft::vector<my_pointer_struct, myallocator<my_pointer_struct> >	v_my_pointer_struct( 6, pts, alloc_pts );
+		ft::vector< my_const_pointer_struct >							v_my_const_pointer_struct( 4, my_const_pointer_struct() );
+		ft::vector< my_bool_struct >									v_my_bool_struct( 2 );
+		ft::vector< my_char_struct, std::allocator< my_char_struct > >	v_my_char_struct( 3 );
+		ft::vector< my_int_struct, myallocator< my_int_struct > >		v_my_int_struct( 0, my_int_struct() );
+		ft::vector< my_double_struct >									v_my_double_struct( 1 );
+		ft::vector< my_struct_struct >									v_my_struct_struct( 3 );
+		ft::vector< mystruct, myallocator< mystruct > >					v_mystruct;
+
+		std::cout << std::endl << "allocator & get_allocator()" << std::endl << std::endl;
+
+		int	i = 0;
+
+		if ( v_char.get_allocator().address( i ) )
+			std::cout << "v_char::allocator:\t\t\t\tstd::allocator" << std::endl;
+		if ( v_wchar_t.get_allocator().address( i ) )
+			std::cout << "v_wchar_t::allocator:\t\t\t\tstd::allocator" << std::endl;
+		if ( v_signed_char.get_allocator().address( i ) )
+			std::cout << "v_signed_char::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_unsigned_char.get_allocator().is_myallocator() )
+			std::cout << "v_unsigned_char::allocator:\t\t\tmyallocator" << std::endl;
+		if ( v_short.get_allocator().is_myallocator() )
+			std::cout << "v_short::allocator:\t\t\t\tmyallocator" << std::endl;
+		if ( v_int.get_allocator().address( i ) )
+			std::cout << "v_int::allocator:\t\t\t\tstd::allocator" << std::endl;
+		if ( v_long.get_allocator().is_myallocator() )
+			std::cout << "v_long::allocator:\t\t\t\tmyallocator" << std::endl;
+		if ( v_unsigned_short.get_allocator().address( i ) )
+			std::cout << "v_unsigned_short::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_unsigned_int.get_allocator().is_myallocator() )
+			std::cout << "v_unsigned_int::allocator:\t\t\tmyallocator" << std::endl;
+		if ( v_unsigned_long.get_allocator().address( i ) )
+			std::cout << "v_unsigned_long::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_float.get_allocator().is_myallocator() )
+			std::cout << "v_float::allocator:\t\t\t\tmyallocator" << std::endl;
+		if ( v_double.get_allocator().address( i ) )
+			std::cout << "v_double::allocator:\t\t\t\tstd::allocator" << std::endl;
+		if ( v_long_double.get_allocator().is_myallocator() )
+			std::cout << "v_long_double::allocator:\t\t\tmyallocator" << std::endl;
+		if ( v_void_p.get_allocator().address( *( v_void_p.begin() ) ) )
+			std::cout << "v_void_p::allocator:\t\t\t\tstd::allocator" << std::endl;
+		if ( v_void_const_p.get_allocator().address( *( v_void_const_p.begin() ) ) )
+			std::cout << "v_void_const_p::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_my_empty_struct.get_allocator().is_myallocator() )
+			std::cout << "v_my_empty_struct::allocator:\t\t\tmyallocator" << std::endl;
+		if ( v_my_pointer_struct.get_allocator().is_myallocator() )
+			std::cout << "v_my_pointer_struct::allocator:\t\t\tmyallocator" << std::endl;
+		if ( v_my_const_pointer_struct.get_allocator().address( *( v_my_const_pointer_struct.begin() ) ) )
+			std::cout << "v_my_const_pointer_struct::allocator:\t\tstd::allocator" << std::endl;
+		if ( v_my_bool_struct.get_allocator().address( *( v_my_bool_struct.begin() ) ) )
+			std::cout << "v_my_bool_struct::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_my_char_struct.get_allocator().address( *( v_my_char_struct.begin() ) ) )
+			std::cout << "v_my_char_struct::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_my_int_struct.get_allocator().is_myallocator() )
+			std::cout << "v_my_int_struct::allocator:\t\t\tmyallocator" << std::endl;
+		if ( v_my_double_struct.get_allocator().address( *( v_my_double_struct.begin() ) ) )
+			std::cout << "v_my_double_struct::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_my_struct_struct.get_allocator().address( *( v_my_struct_struct.begin() ) ) )
+			std::cout << "v_my_struct_struct::allocator:\t\t\tstd::allocator" << std::endl;
+		if ( v_mystruct.get_allocator().is_myallocator() )
+			std::cout << "v_mystruct::allocator:\t\t\t\tmyallocator" << std::endl;
+
+		std::cout << std::endl;
+
+		std::cout << std::endl << "size() & capacity() & empty()" << std::boolalpha << std::endl << std::endl;
+
+		std::cout << "v_char:\t\t\t\t" << v_char.size() << "\t" << v_char.capacity() << "\t" << v_char.empty() << std::endl;
+		std::cout << "v_wchar_t:\t\t\t" << v_wchar_t.size() << "\t" << v_wchar_t.capacity() << "\t" << v_wchar_t.empty() << std::endl;
+		std::cout << "v_signed_char:\t\t\t" << v_signed_char.size() << "\t" << v_signed_char.capacity() << "\t" << v_signed_char.empty() << std::endl;
+		std::cout << "v_unsigned_char:\t\t" << v_unsigned_char.size() << "\t" << v_unsigned_char.capacity() << "\t" << v_unsigned_char.empty() << std::endl;
+		std::cout << "v_short:\t\t\t" << v_short.size() << "\t" << v_short.capacity() << "\t" << v_short.empty() << std::endl;
+		std::cout << "v_int:\t\t\t\t" << v_int.size() << "\t" << v_int.capacity() << "\t" << v_int.empty() << std::endl;
+		std::cout << "v_long:\t\t\t\t" << v_long.size() << "\t" << v_long.capacity() << "\t" << v_long.empty() << std::endl;
+		std::cout << "v_unsigned_short:\t\t" << v_unsigned_short.size() << "\t" << v_unsigned_short.capacity() << "\t" << v_unsigned_short.empty() << std::endl;
+		std::cout << "v_unsigned_int:\t\t\t" << v_unsigned_int.size() << "\t" << v_unsigned_int.capacity() << "\t" << v_unsigned_int.empty() << std::endl;
+		std::cout << "v_unsigned_long:\t\t" << v_unsigned_long.size() << "\t" << v_unsigned_long.capacity() << "\t" << v_unsigned_long.empty() << std::endl;
+		std::cout << "v_float:\t\t\t" << v_float.size() << "\t" << v_float.capacity() << "\t" << v_float.empty() << std::endl;
+		std::cout << "v_double:\t\t\t" << v_double.size() << "\t" << v_double.capacity() << "\t" << v_double.empty() << std::endl;
+		std::cout << "v_long_double:\t\t\t" << v_long_double.size() << "\t" << v_long_double.capacity() << "\t" << v_long_double.empty() << std::endl;
+		std::cout << "v_void_p:\t\t\t" << v_void_p.size() << "\t" << v_void_p.capacity() << "\t" << v_void_p.empty() << std::endl;
+		std::cout << "v_void_const_p:\t\t\t" << v_void_const_p.size() << "\t" << v_void_const_p.capacity() << "\t" << v_void_const_p.empty() << std::endl;
+		std::cout << "v_my_empty_struct:\t\t" << v_my_empty_struct.size() << "\t" << v_my_empty_struct.capacity() << "\t" << v_my_empty_struct.empty() << std::endl;
+		std::cout << "v_my_pointer_struct:\t\t" << v_my_pointer_struct.size() << "\t" << v_my_pointer_struct.capacity() << "\t" << v_my_pointer_struct.empty() << std::endl;
+		std::cout << "v_my_const_pointer_struct:\t" << v_my_const_pointer_struct.size() << "\t" << v_my_const_pointer_struct.capacity() << "\t" << v_my_const_pointer_struct.empty() << std::endl;
+		std::cout << "v_my_bool_struct:\t\t" << v_my_bool_struct.size() << "\t" << v_my_bool_struct.capacity() << "\t" << v_my_bool_struct.empty() << std::endl;
+		std::cout << "v_my_char_struct:\t\t" << v_my_char_struct.size() << "\t" << v_my_char_struct.capacity() << "\t" << v_my_char_struct.empty() << std::endl;
+		std::cout << "v_my_int_struct:\t\t" << v_my_int_struct.size() << "\t" << v_my_int_struct.capacity() << "\t" << v_my_int_struct.empty() << std::endl;
+		std::cout << "v_my_double_struct:\t\t" << v_my_double_struct.size() << "\t" << v_my_double_struct.capacity() << "\t" << v_my_double_struct.empty() << std::endl;
+		std::cout << "v_my_struct_struct:\t\t" << v_my_struct_struct.size() << "\t" << v_my_struct_struct.capacity() << "\t" << v_my_struct_struct.empty() << std::endl;
+		std::cout << "v_mystruct:\t\t\t" << v_mystruct.size() << "\t" << v_mystruct.capacity() << "\t" << v_mystruct.empty() << std::endl;
+
+		std::cout << std::endl;
+
+		std::cout << std::endl << "max_size()" << std::endl << std::endl;
+
+		std::cout << "v_char:\t\t\t\t" << std::bitset< 64 >( v_char.max_size() ) << std::endl;
+		std::cout << "v_wchar_t:\t\t\t" << std::bitset< 64 >( v_wchar_t.max_size() ) << std::endl;
+		std::cout << "v_signed_char:\t\t\t" << std::bitset< 64 >( v_signed_char.max_size() ) << std::endl;
+		std::cout << "v_unsigned_char:\t\t" << std::bitset< 64 >( v_unsigned_char.max_size() ) << std::endl;
+		std::cout << "v_short:\t\t\t" << std::bitset< 64 >( v_short.max_size() ) << std::endl;
+		std::cout << "v_int:\t\t\t\t" << std::bitset< 64 >( v_int.max_size() ) << std::endl;
+		std::cout << "v_long:\t\t\t\t" << std::bitset< 64 >( v_long.max_size() ) << std::endl;
+		std::cout << "v_unsigned_short:\t\t" << std::bitset< 64 >( v_unsigned_short.max_size() ) << std::endl;
+		std::cout << "v_unsigned_int:\t\t\t" << std::bitset< 64 >( v_unsigned_int.max_size() ) << std::endl;
+		std::cout << "v_unsigned_long:\t\t" << std::bitset< 64 >( v_unsigned_long.max_size() ) << std::endl;
+		std::cout << "v_float:\t\t\t" << std::bitset< 64 >( v_float.max_size() ) << std::endl;
+		std::cout << "v_double:\t\t\t" << std::bitset< 64 >( v_double.max_size() ) << std::endl;
+		std::cout << "v_long_double:\t\t\t" << std::bitset< 64 >( v_long_double.max_size() ) << std::endl;
+		std::cout << "v_void_p:\t\t\t" << std::bitset< 64 >( v_void_p.max_size() ) << std::endl;
+		std::cout << "v_void_const_p:\t\t\t" << std::bitset< 64 >( v_void_const_p.max_size() ) << std::endl;
+		std::cout << "v_my_empty_struct:\t\t" << std::bitset< 64 >( v_my_empty_struct.max_size() ) << std::endl;
+		std::cout << "v_my_pointer_struct:\t\t" << std::bitset< 64 >( v_my_pointer_struct.max_size() ) << std::endl;
+		std::cout << "v_my_const_pointer_struct:\t" << std::bitset< 64 >( v_my_const_pointer_struct.max_size() ) << std::endl;
+		std::cout << "v_my_bool_struct:\t\t" << std::bitset< 64 >( v_my_bool_struct.max_size() ) << std::endl;
+		std::cout << "v_my_char_struct:\t\t" << std::bitset< 64 >( v_my_char_struct.max_size() ) << std::endl;
+		std::cout << "v_my_int_struct:\t\t" << std::bitset< 64 >( v_my_int_struct.max_size() ) << std::endl;
+		std::cout << "v_my_double_struct:\t\t" << std::bitset< 64 >( v_my_double_struct.max_size() ) << std::endl;
+		std::cout << "v_my_struct_struct:\t\t" << std::bitset< 64 >( v_my_struct_struct.max_size() ) << std::endl;
+		std::cout << "v_mystruct:\t\t\t" << std::bitset< 64 >( v_mystruct.max_size() ) << std::endl;
+
+		std::cout << std::endl;
+
+	}
 
 	int					arr[] = { 0, 1, 2, 3, 4 };
 	std::size_t			size = ( sizeof( arr ) / sizeof( arr[ 0 ] ) );
@@ -136,87 +314,253 @@ int	main( void )
 	p[ 2 ] = 3;
 	--p;
 
-	std::cout << "v.size(): " << v.size() << std::endl;
-	for ( std::size_t	count = 0; count < v.size(); ++count )
-		std::cout << v[ count ] << " ";
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "first allocation" << std::endl;
 	std::cout << std::endl;
-	if ( v.data() != p )
-		std::cout << "reallocation" << std::endl;
+
+	p = v.data();
 
 	v.resize( 2, 73 );
 
-	std::cout << "v.size(): " << v.size() << std::endl;
-	for ( std::size_t	count = 0; count < v.size(); ++count )
-		std::cout << v[ count ] << " ";
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
 	std::cout << std::endl;
-	if ( v.data() != p )
-		std::cout << "reallocation" << std::endl;
+
+	p = v.data();
 
 	v.resize( 7, 4 );
 
-	std::cout << "v.size(): " << v.size() << std::endl;
-	for ( std::size_t	count = 0; count < v.size(); ++count )
-		std::cout << v[ count ] << " ";
-	std::cout << std::endl;
+	vector_operator_check( v );
 	if ( v.data() != p )
 		std::cout << "reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
 
 	v.resize( 13 );
 
-	std::cout << "v.size(): " << v.size() << std::endl;
-	for ( std::size_t	count = 0; count < v.size(); ++count )
-		std::cout << v[ count ] << " ";
-	std::cout << std::endl;
+	vector_operator_check( v );
 	if ( v.data() != p )
 		std::cout << "reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.resize( 19 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.push_back( 5 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.push_back( -84 );
+
+	vector_operator_check( v );
+	if ( v.data() != p )
+		std::cout << "reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.pop_back();
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.erase( v.begin() + 1 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.erase( v.begin(), v.begin() + 4);
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.begin(), -50 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.end(), 124 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.begin() + 7, 4, 73 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.end() - 2, 0, 2 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.begin() + 3, v.begin(), v.begin() + 4 );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.end() - 10, arr, arr + size );
+
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.end() - 22, 63, -39 );
+
+	vector_operator_check( v );
+	if ( v.data() != p )
+		std::cout << "reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	v.insert( v.begin() + 5, 3 );
+
+	vector_operator_check( v );
+	if ( v.data() != p )
+		std::cout << "reallocation" << std::endl;
+	std::cout << std::endl;
+
+	p = v.data();
+
+	{
+		ft::vector< char >	v2;
+
+		v2.push_back( '"' );
+		v2.push_back( 'e' );
+		v2.push_back( '2' );
+
+		vector_operator_check( v2 );
+
+		v2.erase( v2.begin(), v2.end() );
+
+		vector_operator_check( v2 );
+
+		if ( v2.begin() == v2.end() )
+			std::cout << "v2.begin() == v2.end()" << std::endl;
+
+		v2.erase( v2.begin(), v2.end() );
+
+		vector_operator_check( v2 );
+	}
 
 	v.resize( 2 );
 
-	std::cout << "v.size(): " << v.size() << std::endl;
-	for ( std::size_t	count = 0; count < v.size(); ++count )
-		std::cout << v[ count ] << " ";
+	vector_operator_check( v );
+	if ( v.data() == p )
+		std::cout << "no reallocation" << std::endl;
 	std::cout << std::endl;
-	if ( v.data() != p )
-		std::cout << "reallocation" << std::endl;
-
-	// vector::reserve
 
 	int *				p_v = &*( v.begin() );
 	int &				r_v = *v.begin();
 	ft::vector< int > *	v_ptr = &v;
 
-	std::cout << std::endl << "vector::reserve()" << std::endl << std::endl;
-
-	for ( ft::vector< int >::iterator it = v.begin(); it != v.end(); ++it )
-		std::cout << *it << std::endl;
+	vector_iterator_check( v );
 	if ( p_v == v.data() )
 		std::cout << "p_v == v.data()" << std::endl;
 	if ( &r_v == v.data() )
 		std::cout << "&r_v == v.data()" << std::endl;
 	if ( &*( v.begin() ) == v.data() )
 		std::cout << "&*( v.begin() ) == v.data()" << std::endl;
-	std::cout << "*p_v: " << *p_v << std::endl;
-	std::cout << "r_v: " << r_v << std::endl;
 	std::cout << "*v.begin(): " << *v.begin() << std::endl;
 	if ( v_ptr == &v )
 		std::cout << "saved vector address" << std::endl;
+	std::cout << std::endl;
 
 	v.reserve( 300 );
 
-	for ( ft::vector< int >::iterator it = v.begin(); it != v.end(); ++it )
-		std::cout << *it << std::endl;
+	vector_iterator_check( v );
 	if ( p_v != v.data() )
 		std::cout << "p_v != v.data()" << std::endl;
 	if ( &r_v != v.data() )
 		std::cout << "&r_v != v.data()" << std::endl;
 	if ( &*( v.begin() ) == v.data() )
 		std::cout << "&*( v.begin() ) == v.data()" << std::endl;
-	std::cout << "*p_v: " << *p_v << std::endl;
-	std::cout << "r_v: " << r_v << std::endl;
 	std::cout << "*v.begin(): " << *v.begin() << std::endl;
 	if ( v_ptr == &v )
 		std::cout << "vector address same as before reserve" << std::endl;
 	std::cout << std::endl;
+
+	int &				r_v2 = *v.begin();
+
+	p_v = &*( v.begin() );
+
+	v.reserve( 12 );
+
+	vector_iterator_check( v );
+	if ( p_v == v.data() )
+		std::cout << "p_v == v.data()" << std::endl;
+	if ( &r_v2 == v.data() )
+		std::cout << "&r_v2 == v.data()" << std::endl;
+	if ( &*( v.begin() ) == v.data() )
+		std::cout << "&*( v.begin() ) == v.data()" << std::endl;
+	std::cout << "*v.begin(): " << *v.begin() << std::endl;
+	if ( v_ptr == &v )
+		std::cout << "vector address same as before reserve" << std::endl;
+	std::cout << std::endl;
+
+	ft::vector< int >::iterator			v_it = v.begin();
+	ft::vector< int >::const_iterator	v_cit = v.end();
+	ft::vector< int >					vec( v.begin(), v.end() );
+
+	vector_iterator_check( v );
+	vector_iterator_check( vec );
+
+	if ( *v_it == *vec.begin() )
+		std::cout << "*v_it == *vec.begin()" << std::endl;
+	if ( *( v_cit - 1 ) == *( vec.end() - 1 ) )
+		std::cout << "*( v_cit - 1 ) == *( vec.end() - 1 )" << std::endl;
 
 	return ( 0 );
 }
