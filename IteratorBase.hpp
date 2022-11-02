@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 21:05:00 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/27 18:52:25 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/01 20:25:39 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,74 +138,74 @@ struct IteratorBase
 // compare
 
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator==( IteratorBase< IteratorL, Container > const & lhs, \
+bool	operator==( IteratorBase< IteratorL, Container > const & lhs, \
 						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() == rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator==( IteratorBase< Iterator, Container > const & lhs, \
+bool	operator==( IteratorBase< Iterator, Container > const & lhs, \
 						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() == rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator!=( IteratorBase< IteratorL, Container > const & lhs, \
+bool	operator!=( IteratorBase< IteratorL, Container > const & lhs, \
 						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() != rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator!=( IteratorBase< Iterator, Container > const & lhs, \
+bool	operator!=( IteratorBase< Iterator, Container > const & lhs, \
 						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() != rhs.base() );
 }
 
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator<( IteratorBase< IteratorL, Container > const & lhs, \
+bool	operator<( IteratorBase< IteratorL, Container > const & lhs, \
 					   IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() < rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator<( IteratorBase< Iterator, Container > const & lhs, \
+bool	operator<( IteratorBase< Iterator, Container > const & lhs, \
 					   IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() < rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator>( IteratorBase< IteratorL, Container > const & lhs, \
+bool	operator>( IteratorBase< IteratorL, Container > const & lhs, \
 					   IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() > rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator>( IteratorBase< Iterator, Container > const & lhs, \
+bool	operator>( IteratorBase< Iterator, Container > const & lhs, \
 					   IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() > rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator<=( IteratorBase< IteratorL, Container > const & lhs, \
+bool	operator<=( IteratorBase< IteratorL, Container > const & lhs, \
 						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() <= rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator<=( IteratorBase< Iterator, Container > const & lhs, \
+bool	operator<=( IteratorBase< Iterator, Container > const & lhs, \
 						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() <= rhs.base() );
 }
 template< typename IteratorL, typename IteratorR, typename Container >
-inline bool	operator>=( IteratorBase< IteratorL, Container > const & lhs, \
+bool	operator>=( IteratorBase< IteratorL, Container > const & lhs, \
 						IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() >= rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline bool	operator>=( IteratorBase< Iterator, Container > const & lhs, \
+bool	operator>=( IteratorBase< Iterator, Container > const & lhs, \
 						IteratorBase< Iterator, Container > const & rhs )
 {
 	return ( lhs.base() >= rhs.base() );
@@ -214,14 +214,14 @@ inline bool	operator>=( IteratorBase< Iterator, Container > const & lhs, \
 // difference
 
 template< typename IteratorL, typename IteratorR, typename Container >
-inline typename IteratorBase< IteratorL, Container >::difference_type\
+typename IteratorBase< IteratorL, Container >::difference_type\
 	operator-( IteratorBase< IteratorL, Container > const & lhs, \
 			   IteratorBase< IteratorR, Container > const & rhs )
 {
 	return ( lhs.base() - rhs.base() );
 }
 template< typename Iterator, typename Container >
-inline typename IteratorBase< Iterator, Container >::difference_type\
+typename IteratorBase< Iterator, Container >::difference_type\
 	operator-( IteratorBase< Iterator, Container > const & lhs, \
 			   IteratorBase< Iterator, Container > const & rhs )
 {
@@ -231,7 +231,7 @@ inline typename IteratorBase< Iterator, Container >::difference_type\
 // rvalue operation
 
 template< typename Iterator, typename Container >
-inline IteratorBase< Iterator, Container >\
+IteratorBase< Iterator, Container >\
 	operator+( typename IteratorBase< Iterator, Container >\
 					::difference_type const & n, \
 			   IteratorBase< Iterator, Container > const & it )

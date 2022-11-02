@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 22:22:09 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/01 15:24:44 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/01 22:50:53 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -551,10 +551,13 @@ int	main( void )
 	if ( v_ptr == &v )
 		std::cout << "vector address same as before reserve" << std::endl;
 	std::cout << std::endl;
+	std::cout << std::endl;
 
 	ft::vector< int >::iterator			v_it = v.begin();
 	ft::vector< int >::const_iterator	v_cit = v.end();
 	ft::vector< int >					vec( v.begin(), v.end() );
+	int *								i_ptr;
+	int const *							i_const_ptr = v_cit.base();
 
 	vector_iterator_check( v );
 	vector_iterator_check( vec );
@@ -563,6 +566,97 @@ int	main( void )
 		std::cout << "*v_it == *vec.begin()" << std::endl;
 	if ( *( v_cit - 1 ) == *( vec.end() - 1 ) )
 		std::cout << "*( v_cit - 1 ) == *( vec.end() - 1 )" << std::endl;
+	std::cout << std::endl;
+
+	i_ptr = v_it.base();
+	std::cout << "*i_ptr: " << *i_ptr << std::endl;
+	std::cout << "*i_const_ptr: " << *i_const_ptr << std::endl;
+
+	std::cout << "v_it[ 1 ]: " << v_it[ 1 ] << std::endl;
+	v_it[ 1 ] = -3;
+	std::cout << "v_cit[ -1 ]: " << v_cit[ -1 ] << std::endl;
+	std::cout << "*v_it: " << *v_it << std::endl;
+	*v_it = 2;
+	std::cout << "i_ptr[ 0 ]: " << i_ptr[ 0 ] << std::endl;
+	std::cout << "i_const_ptr[ -2 ]: " << i_const_ptr[ -2 ] << std::endl;
+
+	ft::vector< my_int_struct >				v_struct( 2 );
+	ft::vector< my_int_struct >::iterator	v_struct_it = v_struct.begin();
+
+	v_struct_it->i = 10;
+	std::cout << "v_struct_it->i: " << v_struct_it->i << std::endl;
+
+	( *v_struct_it ).i = -1;
+	std::cout << "( *v_struct_it ).i: " << ( *v_struct_it ).i << std::endl;
+
+	std::cout << std::endl;
+
+	if ( v_it == v_cit )
+		std::cout << "v_it == v_cit" << std::endl;
+	if ( v_it != v_cit )
+		std::cout << "v_it != v_cit" << std::endl;
+	if ( v_it < v_cit )
+		std::cout << "v_it < v_cit" << std::endl;
+	if ( v_it > v_cit )
+		std::cout << "v_it > v_cit" << std::endl;
+	if ( v_it <= v_cit )
+		std::cout << "v_it <= v_cit" << std::endl;
+	if ( v_it >= v_cit )
+		std::cout << "v_it >= v_cit" << std::endl;
+
+	if ( v_cit == v_it )
+		std::cout << "v_cit == v_it" << std::endl;
+	if ( v_cit != v_it )
+		std::cout << "v_cit != v_it" << std::endl;
+	if ( v_cit < v_it )
+		std::cout << "v_cit < v_it" << std::endl;
+	if ( v_cit > v_it )
+		std::cout << "v_cit > v_it" << std::endl;
+	if ( v_cit <= v_it )
+		std::cout << "v_cit <= v_it" << std::endl;
+	if ( v_cit >= v_it )
+		std::cout << "v_cit >= v_it" << std::endl;
+
+	ft::vector< int >::iterator			v_it2;
+
+	v_it2 = v_it;
+	++v_it;
+	v_it2 += 2;
+	if ( v_it++ == ( v_it2 - 1 ) )
+		std::cout << "v_it == ( v_it2 - 1 )" << std::endl;
+
+	if ( v_it == v_it2 )
+		std::cout << "v_it == v_it2" << std::endl;
+	if ( v_it != v_it2 )
+		std::cout << "v_it != v_it2" << std::endl;
+	if ( v_it < v_it2 )
+		std::cout << "v_it < v_it2" << std::endl;
+	if ( v_it > v_it2 )
+		std::cout << "v_it > v_it2" << std::endl;
+	if ( v_it <= v_it2 )
+		std::cout << "v_it <= v_it2" << std::endl;
+	if ( v_it >= v_it2 )
+		std::cout << "v_it >= v_it2" << std::endl;
+
+	ft::vector< int >::const_iterator	v_cit2 = v_cit;
+
+	v_cit--;
+	v_cit2 -= 2;
+	if ( --v_cit == v_cit2 )
+		std::cout << "v_cit == v_cit2" << std::endl;
+
+	if ( v_cit == v_cit2 )
+		std::cout << "v_cit == v_cit2" << std::endl;
+	if ( v_cit != v_cit2 )
+		std::cout << "v_cit != v_cit2" << std::endl;
+	if ( v_cit < v_cit2 )
+		std::cout << "v_cit < v_cit2" << std::endl;
+	if ( v_cit > v_cit2 )
+		std::cout << "v_cit > v_cit2" << std::endl;
+	if ( v_cit <= v_cit2 )
+		std::cout << "v_cit <= v_cit2" << std::endl;
+	if ( v_cit >= v_cit2 )
+		std::cout << "v_cit >= v_cit2" << std::endl;
 
 	return ( 0 );
 }
