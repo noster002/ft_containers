@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 22:22:09 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/01 22:50:53 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/02 17:11:30 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@
 template< typename T >
 void	vector_check_sizes( ft::vector< T > const & v )
 {
-	std::cout << "v.size(): " << v.size() << std::endl;
-	std::cout << "v.capacity(): " << v.capacity() << std::endl;
-	std::cout << "v.max_size(): " << v.max_size() << std::endl;
+	std::cout << "size: " << v.size() << std::endl;
+	std::cout << "capacity: " << v.capacity() << std::endl;
+	std::cout << "max_size: " << v.max_size() << std::endl;
 
 	return ;
 }
@@ -291,10 +291,10 @@ int	main( void )
 	int *				p = v.data();
 
 	*p = 5;
-	p += size;
-	*p = 22;
+	p += ( v.size() - 1 );
+	std::cout << "last element: " << *p << std::endl;
 
-	for ( std::size_t	count = 0; count <= v.size(); ++count )
+	for ( std::size_t	count = 0; count < v.size(); ++count )
 		std::cout << v[ count ] << " ";
 	std::cout << std::endl;
 
@@ -554,7 +554,7 @@ int	main( void )
 	std::cout << std::endl;
 
 	ft::vector< int >::iterator			v_it = v.begin();
-	ft::vector< int >::const_iterator	v_cit = v.end();
+	ft::vector< int >::const_iterator	v_cit = ( v.end() - 1 );
 	ft::vector< int >					vec( v.begin(), v.end() );
 	int *								i_ptr;
 	int const *							i_const_ptr = v_cit.base();
@@ -578,16 +578,34 @@ int	main( void )
 	std::cout << "*v_it: " << *v_it << std::endl;
 	*v_it = 2;
 	std::cout << "i_ptr[ 0 ]: " << i_ptr[ 0 ] << std::endl;
-	std::cout << "i_const_ptr[ -2 ]: " << i_const_ptr[ -2 ] << std::endl;
+	std::cout << "i_const_ptr[ -2 ]: " << i_const_ptr[ -1 ] << std::endl;
+	std::cout << std::endl;
+
+	std::size_t								distance;
+
+	distance = v_it - v_cit;
+	std::cout << "distance( v_cit, v_it ) = " << distance << std::endl;
+	distance = v_cit - v_it;
+	std::cout << "distance( v_it, v_cit ) = " << distance << std::endl;
+	distance = v_it[ 1 ] - v_cit[ -1 ];
+	std::cout << "distance( v_cit[ -1 ], v_it[ 1 ] ) = " << distance << std::endl;
+	std::cout << std::endl;
+
+	if ( ( v_it + 3 ) == ( 3 + v_it ) )
+		std::cout << "( v_it + 3 ) == ( 3 + v_it )" << std::endl;
+	if ( ( 3 + v_it - 2 ) == ( v_cit - 1 ) )
+		std::cout << "( 3 + v_it - 2 ) == ( v_cit - 1 )" << std::endl;
+	std::cout << std::endl;
 
 	ft::vector< my_int_struct >				v_struct( 2 );
-	ft::vector< my_int_struct >::iterator	v_struct_it = v_struct.begin();
+	ft::vector< my_int_struct >::iterator	v_struct_it( v_struct.begin() );
 
 	v_struct_it->i = 10;
 	std::cout << "v_struct_it->i: " << v_struct_it->i << std::endl;
 
 	( *v_struct_it ).i = -1;
 	std::cout << "( *v_struct_it ).i: " << ( *v_struct_it ).i << std::endl;
+
 
 	std::cout << std::endl;
 
@@ -657,6 +675,138 @@ int	main( void )
 		std::cout << "v_cit <= v_cit2" << std::endl;
 	if ( v_cit >= v_cit2 )
 		std::cout << "v_cit >= v_cit2" << std::endl;
+
+
+	ft::vector< int >			vec1;
+	ft::vector< int >			vec2;
+	ft::vector< int >			vec3( v );
+
+	if ( vec1 == vec2 )
+		std::cout << "vec1 == vec2" << std::endl;
+
+	vec1 = v;
+	if ( v == vec1 )
+		std::cout << "v == vec1" << std::endl;
+	if ( vec1 == vec3 )
+		std::cout << "vec1 == vec3" << std::endl;
+
+	vec2.assign( v.begin(), v.end() );
+	if ( v == vec2 )
+		std::cout << "v == vec2" << std::endl;
+	if ( vec1 == vec2 )
+		std::cout << "vec1 == vec2" << std::endl;
+	std::cout << std::endl;
+
+	vector_operator_check( vec1 );
+	vec1.assign( 1, 3 );
+	vector_operator_check( vec1 );
+	vec1.assign( 3, 7 );
+	vector_operator_check( vec1 );
+	std::cout << std::endl;
+
+	if ( v == vec1 )
+		std::cout << "v == vec1" << std::endl;
+	if ( v != vec1 )
+		std::cout << "v != vec1" << std::endl;
+	if ( v < vec1 )
+		std::cout << "v < vec1" << std::endl;
+	if ( v > vec1 )
+		std::cout << "v > vec1" << std::endl;
+	if ( v <= vec1 )
+		std::cout << "v <= vec1" << std::endl;
+	if ( v >= vec1 )
+		std::cout << "v >= vec1" << std::endl;
+
+	if ( vec1 == v )
+		std::cout << "vec1 == v" << std::endl;
+	if ( vec1 != v )
+		std::cout << "vec1 != v" << std::endl;
+	if ( vec1 < v )
+		std::cout << "vec1 < v" << std::endl;
+	if ( vec1 > v )
+		std::cout << "vec1 > v" << std::endl;
+	if ( vec1 <= v )
+		std::cout << "vec1 <= v" << std::endl;
+	if ( vec1 >= v )
+		std::cout << "vec1 >= v" << std::endl;
+	std::cout << std::endl;
+
+	vec1.assign( v.begin(), v.end() );
+
+	vector_operator_check( vec1 );
+
+	if ( v == vec1 )
+		std::cout << "v == vec1" << std::endl;
+	if ( v != vec1 )
+		std::cout << "v != vec1" << std::endl;
+	if ( v < vec1 )
+		std::cout << "v < vec1" << std::endl;
+	if ( v > vec1 )
+		std::cout << "v > vec1" << std::endl;
+	if ( v <= vec1 )
+		std::cout << "v <= vec1" << std::endl;
+	if ( v >= vec1 )
+		std::cout << "v >= vec1" << std::endl;
+	std::cout << std::endl;
+
+	vec1.assign( v.begin(), ( v.end() - 1 ) );
+
+	vector_operator_check( vec1 );
+
+	if ( v == vec1 )
+		std::cout << "v == vec1" << std::endl;
+	if ( v != vec1 )
+		std::cout << "v != vec1" << std::endl;
+	if ( v < vec1 )
+		std::cout << "v < vec1" << std::endl;
+	if ( v > vec1 )
+		std::cout << "v > vec1" << std::endl;
+	if ( v <= vec1 )
+		std::cout << "v <= vec1" << std::endl;
+	if ( v >= vec1 )
+		std::cout << "v >= vec1" << std::endl;
+	std::cout << std::endl;
+
+	vec1[ 0 ] = 50;
+
+	vector_operator_check( vec1 );
+
+	if ( v == vec1 )
+		std::cout << "v == vec1" << std::endl;
+	if ( v != vec1 )
+		std::cout << "v != vec1" << std::endl;
+	if ( v < vec1 )
+		std::cout << "v < vec1" << std::endl;
+	if ( v > vec1 )
+		std::cout << "v > vec1" << std::endl;
+	if ( v <= vec1 )
+		std::cout << "v <= vec1" << std::endl;
+	if ( v >= vec1 )
+		std::cout << "v >= vec1" << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "vec1:" << std::endl;
+	vector_operator_check( vec1 );
+	std::cout << std::endl << "vec2:" << std::endl;
+	vector_operator_check( vec2 );
+
+	ft::swap( vec1, vec2 );
+	std::cout << std::endl << "ft::swap( vec1, vec2 )" << std::endl;
+
+	std::cout << std::endl << "vec1:" << std::endl;
+	vector_operator_check( vec1 );
+	std::cout << std::endl << "vec2:" << std::endl;
+	vector_operator_check( vec2 );
+	std::cout << std::endl;
+
+	vec1.swap( vec2 );
+	std::cout << std::endl << "vec1.swap( vec2 )" << std::endl;
+
+	std::cout << std::endl << "vec1:" << std::endl;
+	vector_operator_check( vec1 );
+	std::cout << std::endl << "vec2:" << std::endl;
+	vector_operator_check( vec2 );
+	std::cout << std::endl;
 
 	return ( 0 );
 }
