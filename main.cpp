@@ -20,6 +20,7 @@
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 #include "iterator_traits.hpp"
+#include "reverse_iterator.hpp"
 #include "pair.hpp"
 #include "make_pair.hpp"
 #include "tests/myallocator.hpp"
@@ -557,13 +558,17 @@ int	main( void )
 	int *								i_ptr;
 	int const *							i_const_ptr = v_cit.base();
 
+	std::cout << "v:" << std::endl;
 	vector_iterator_check( v );
+	std::cout << std::endl;
+	std::cout << "vec:" << std::endl;
 	vector_iterator_check( vec );
+	std::cout << std::endl;
 
 	if ( *v_it == *vec.begin() )
 		std::cout << "*v_it == *vec.begin()" << std::endl;
-	if ( *( v_cit - 1 ) == *( vec.end() - 1 ) )
-		std::cout << "*( v_cit - 1 ) == *( vec.end() - 1 )" << std::endl;
+	if ( *v_cit == *( vec.end() - 1 ) )
+		std::cout << "*v_cit == *( vec.end() - 1 )" << std::endl;
 	std::cout << std::endl;
 
 	i_ptr = v_it.base();
@@ -576,7 +581,7 @@ int	main( void )
 	std::cout << "*v_it: " << *v_it << std::endl;
 	*v_it = 2;
 	std::cout << "i_ptr[ 0 ]: " << i_ptr[ 0 ] << std::endl;
-	std::cout << "i_const_ptr[ -2 ]: " << i_const_ptr[ -1 ] << std::endl;
+	std::cout << "i_const_ptr[ -1 ]: " << i_const_ptr[ -1 ] << std::endl;
 	std::cout << std::endl;
 
 	std::size_t								distance;
@@ -591,8 +596,8 @@ int	main( void )
 
 	if ( ( v_it + 3 ) == ( 3 + v_it ) )
 		std::cout << "( v_it + 3 ) == ( 3 + v_it )" << std::endl;
-	if ( ( 3 + v_it - 2 ) == ( v_cit - 1 ) )
-		std::cout << "( 3 + v_it - 2 ) == ( v_cit - 1 )" << std::endl;
+	if ( ( 3 + v_it - 3 ) == ( v_cit - 1 ) )
+		std::cout << "( 3 + v_it - 3 ) == ( v_cit - 1 )" << std::endl;
 	std::cout << std::endl;
 
 	ft::vector< my_int_struct >				v_struct( 2 );
@@ -805,6 +810,156 @@ int	main( void )
 	std::cout << std::endl << "vec2:" << std::endl;
 	vector_operator_check( vec2 );
 	std::cout << std::endl;
+
+	v.push_back( 29 );
+	v.push_back( 5 );
+	v.push_back( 63 );
+	v.push_back( -8 );
+
+	std::cout << "reverse iterator:" << std::endl << std::endl;
+
+	ft::reverse_iterator< ft::vector< int >::iterator >	ri;
+	ft::vector< int >::reverse_iterator					v_rit = v.rbegin();
+	ft::vector< int >::const_reverse_iterator			v_crit = ( v.rend() - 1 );
+	ft::vector< int >									rvec( v.rbegin(), v.rend() );
+
+	ri = v.rbegin() + 4;
+
+	std::cout << "v:" << std::endl;
+	vector_iterator_check( v );
+	std::cout << std::endl;
+	std::cout << "rvec:" << std::endl;
+	vector_iterator_check( rvec );
+	std::cout << std::endl;
+
+	std::cout << *v_rit << " " << *rvec.begin() << std::endl;
+	if ( *v_rit == *rvec.begin() )
+		std::cout << "*v_rit == *rvec.begin()" << std::endl;
+	std::cout << *v_crit << " " << *( rvec.end() - 1 ) << std::endl;
+	if ( *v_crit == *( rvec.end() - 1 ) )
+		std::cout << "*v_crit == *( rvec.end() - 1 )" << std::endl;
+	std::cout << std::endl;
+
+	std::cout << *v_rit << " " << *v.rbegin() << std::endl;
+	if ( *v_rit == *v.rbegin() )
+		std::cout << "*v_rit == *v.rbegin()" << std::endl;
+	std::cout << *v_crit << " " << *( v.rend() - 1 ) << std::endl;
+	if ( *v_crit == *( v.rend() - 1 ) )
+		std::cout << "*v_crit == *( v.rend() - 1 )" << std::endl;
+	std::cout << std::endl;
+
+	v_it = v_rit.base();
+	v_cit = v_crit.base();
+	std::cout << "*( v_it - 1 ): " << *( v_it - 1 ) << std::endl;
+	std::cout << "*v_cit: " << *v_cit << std::endl;
+
+	std::cout << "v_rit[ 1 ]: " << v_rit[ 1 ] << std::endl;
+	v_rit[ 1 ] = -7;
+	std::cout << "v_crit[ -4 ]: " << v_crit[ -4 ] << std::endl;
+	std::cout << "*v_rit: " << *v_rit << std::endl;
+	*v_rit = 9;
+	std::cout << "v_it[ -1 ]: " << v_it[ -1 ] << std::endl;
+	std::cout << "v_cit[ 4 ]: " << v_cit[ 4 ] << std::endl;
+	std::cout << std::endl;
+
+	distance = v_rit - ri;
+	std::cout << "distance( ri, v_rit ) = " << distance << std::endl;
+	distance = ri - v_rit;
+	std::cout << "distance( v_rit, ri ) = " << distance << std::endl;
+	distance = v_rit[ 1 ] - ri[ -3 ];
+	std::cout << "distance( ri[ -3 ], v_rit[ 1 ] ) = " << distance << std::endl;
+	std::cout << std::endl;
+
+	if ( ( v_rit + 3 ) == ( 3 + v_rit ) )
+		std::cout << "( v_rit + 3 ) == ( 3 + v_rit )" << std::endl;
+	if ( ( 3 + v_rit - 2 ) == ( v_crit - 4 ) )
+		std::cout << "( 3 + v_rit - 2 ) == ( v_crit - 4 )" << std::endl;
+	std::cout << std::endl;
+
+	ft::vector< my_char_struct >					v_cstruct( 2 );
+	ft::vector< my_char_struct >::reverse_iterator	v_cstruct_rit( v_cstruct.rbegin() );
+
+	v_cstruct_rit->c = 'n';
+	std::cout << "v_cstruct_rit->c: " << v_cstruct_rit->c << std::endl;
+
+	( *v_cstruct_rit ).c = '6';
+	std::cout << "( *v_cstruct_rit ).c: " << ( *v_cstruct_rit ).c << std::endl;
+
+	std::cout << std::endl;
+
+	if ( v_rit == v_crit )
+		std::cout << "v_rit == v_crit" << std::endl;
+	if ( v_rit != v_crit )
+		std::cout << "v_rit != v_crit" << std::endl;
+	if ( v_rit < v_crit )
+		std::cout << "v_rit < v_crit" << std::endl;
+	if ( v_rit > v_crit )
+		std::cout << "v_rit > v_crit" << std::endl;
+	if ( v_rit <= v_crit )
+		std::cout << "v_rit <= v_crit" << std::endl;
+	if ( v_rit >= v_crit )
+		std::cout << "v_rit >= v_crit" << std::endl;
+
+	if ( v_crit == v_rit )
+		std::cout << "v_crit == v_rit" << std::endl;
+	if ( v_crit != v_rit )
+		std::cout << "v_crit != v_rit" << std::endl;
+	if ( v_crit < v_rit )
+		std::cout << "v_crit < v_rit" << std::endl;
+	if ( v_crit > v_rit )
+		std::cout << "v_crit > v_rit" << std::endl;
+	if ( v_crit <= v_rit )
+		std::cout << "v_crit <= v_rit" << std::endl;
+	if ( v_crit >= v_rit )
+		std::cout << "v_crit >= v_rit" << std::endl;
+
+	ft::vector< int >::reverse_iterator			v_rit2;
+
+	v_rit2 = v_rit;
+	++v_rit;
+	v_rit2 += 2;
+	if ( v_rit++ == ( v_rit2 - 1 ) )
+		std::cout << "v_rit == ( v_rit2 - 1 )" << std::endl;
+
+	if ( v_rit == v_rit2 )
+		std::cout << "v_rit == v_rit2" << std::endl;
+	if ( v_rit != v_rit2 )
+		std::cout << "v_rit != v_rit2" << std::endl;
+	if ( v_rit < v_rit2 )
+		std::cout << "v_rit < v_rit2" << std::endl;
+	if ( v_rit > v_rit2 )
+		std::cout << "v_rit > v_rit2" << std::endl;
+	if ( v_rit <= v_rit2 )
+		std::cout << "v_rit <= v_rit2" << std::endl;
+	if ( v_rit >= v_rit2 )
+		std::cout << "v_rit >= v_rit2" << std::endl;
+
+	ft::vector< int >::const_reverse_iterator	v_crit2 = v_crit;
+
+	v_crit--;
+	v_crit2 -= 2;
+	if ( --v_crit == v_crit2 )
+		std::cout << "v_crit == v_crit2" << std::endl;
+
+	if ( v_crit == v_crit2 )
+		std::cout << "v_crit == v_crit2" << std::endl;
+	if ( v_crit != v_crit2 )
+		std::cout << "v_crit != v_crit2" << std::endl;
+	if ( v_crit < v_crit2 )
+		std::cout << "v_crit < v_crit2" << std::endl;
+	if ( v_crit > v_crit2 )
+		std::cout << "v_crit > v_crit2" << std::endl;
+	if ( v_crit <= v_crit2 )
+		std::cout << "v_crit <= v_crit2" << std::endl;
+	if ( v_crit >= v_crit2 )
+		std::cout << "v_crit >= v_crit2" << std::endl;
+
+	ft::vector< int >::reverse_iterator		revit( v.begin() + 4 );
+
+	std::cout << "v: " << std::endl;
+	vector_operator_check( v );
+	std::cout << "*( v.begin() + 4 ): " << *( v.begin() + 4 ) << std::endl;
+	std::cout << "*revit: " << *revit << std::endl;
 
 	return ( 0 );
 }
