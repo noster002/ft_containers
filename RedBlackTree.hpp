@@ -12,6 +12,7 @@
 
 #ifndef rb_tree_HPP
 # define rb_tree_HPP
+# include <algorithm>
 
 enum rb_tree_color
 {

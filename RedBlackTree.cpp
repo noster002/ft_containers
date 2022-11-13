@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 13:48:06 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/09 01:20:23 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/13 14:52:30 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,80 +148,157 @@ rb_tree_node_base *	rb_tree_rebalance_for_erase( rb_tree_node_base * const node,
 												 rb_tree_node_base & head )
 {
 	rb_tree_node_base *&	root = head.m_parent;
+	rb_tree_node_base *&	leftmost = head.m_left;
+	rb_tree_node_base *&	rightmost = head.m_right;
 
-	// node has two NIL nodes
+	rb_tree_node_base *		new_node = node;
+	rb_tree_node_base *		save_node = 0;
+	rb_tree_node_base *		save_node_parent = 0;
 
-	if ( node == node->m_parent->m_left )
+	if ( ( node->m_left != 0 ) && ( node->m_right != 0 ) )
 	{
-		if ( node->m_color == black )
+		new_node = node->m_right;
+		while ( new_node != 0 )
+			new_node = new_node->m_left;
+		save_node = new_node->m_right;
+		node->m_left->m_parent = new_node;
+		new_node->m_left = node->m_left;
+		if ( new_node != node->m_right )
 		{
-			rb_tree_node_base *	sibling = node->m_parent->m_right;
-
-			if ( sibling->m_color == red )
-			{
-				rb_tree_rotate_left( node->m_parent, root );
-				node->m_parent->m_parent->m_color = black;
-				sibling = node->m_parent->m_right;
-				if ( sibling == 0 )
-					node->m_parent->m_color = red;
-				else
-					sibling->m_color = red;
-			}
-			else
-			{
-				if ( sibling->m_right )
-				{
-					rb_tree_rotate_left( node->m_parent, root );
-					node->m_parent->m_parent->m_color = node->m_parent->m_color;
-					sibling->m_right->m_color = black;
-					node->m_parent->m_color = black;
-				}
-				else
-				{
-					rb_tree_rotate_right( sibling, root );
-					rb_tree_rotate_left( node->m_parent, root );
-					node->m_parent->m_parent->m_color = node->m_parent->m_color;
-					node->m_parent->m_color = black;
-				}
-			}
+			save_node_parent = new_node->m_parent;
+			if ( save_node != 0 )
+				save_node->m_parent = new_node->m_parent;
+			save_node->m_parent->m_left = save_node;
+			new_node->m_right = node->m_right;
+			node->m_right->m_parent = new_node;
 		}
-		node->m_parent->m_left = 0;
+		else
+			save_node_parent = new_node;
+		if ( root == node )
+			root = new_node;
+		else if ( node->m_parent->m_left == node )
+			node->m_parent->m_left = new_node;
+		else
+			node->m_parent->m_right = new_node;
+		new_node->m_parent = node->m_parent;
+		std::swap( new_node->m_color, node->m_color );
 	}
 	else
 	{
-		if ( node->m_color == black )
+		if ( node->m_left == 0 )
+			new_node = node->m_right;
+		else if ( node->m_right == 0 )
+			new_node = node->m_left;
+		save_node_parent = node->m_parent;
+		if ( root == node )
+			root = new_node;
+		else if ( node->m_parent->m_left == node )
+			node->m_parent->m_left = new_node;
+		else
+			node->m_parent->m_right = new_node;
+		if ( new_node != 0 )
 		{
-			rb_tree_node_base *	sibling = node->m_parent->m_left;
+			new_node->m_parent = node->m_parent;
+			if ( leftmost == node )
+				leftmost = new_node;
+			if ( rightmost == node )
+				rightmost = new_node;
+		}
+		else
+		{
+			if ( leftmost == node )
+				leftmost = &head;
+			if ( rightmost == node )
+				rightmost = &head;
+		}
+		save_node = new_node;
+	}
 
-			if ( sibling->m_color == red )
+	if ( node->m_color == black )
+	{
+		while ( save_node != root && ( save_node == 0 || save_node->m_color == black ) )
+		{
+			if ( save_node == save_node_parent->m_left )
 			{
-				rb_tree_rotate_right( node->m_parent, root );
-				node->m_parent->m_parent->m_color = black;
-				sibling = node->m_parent->m_left;
-				if ( sibling == 0 )
-					node->m_parent->m_color = red;
-				else
+				rb_tree_node_base *	sibling = save_node_parent->m_right;
+
+				if ( sibling->m_color == red )
+				{
+					sibling->m_color = black;
+					save_node_parent->m_color = red;
+					rb_tree_rotate_left( save_node_parent, root );
+					sibling = save_node_parent->m_right;
+				}
+				if ( ( ( sibling->m_left == 0 ) ||\
+					   ( sibling->m_left->m_color == black ) ) &&\
+					 ( ( sibling->m_right == 0 ) ||\
+					   ( sibling->m_right->m_color == black ) ) )
+				{
 					sibling->m_color = red;
+					save_node = save_node_parent;
+					save_node_parent = save_node_parent->m_parent;
+				}
+				else
+				{
+					if ( ( sibling->m_right == 0 ) ||\
+						 ( sibling->m_right->m_color == black ) )
+					{
+						sibling->m_left->m_color = black;
+						sibling->m_color = red;
+						rb_tree_rotate_right( sibling, root );
+						sibling = save_node_parent->m_right;
+					}
+					sibling->m_color = save_node_parent->m_color;
+					save_node_parent->m_color = black;
+					if ( sibling->m_right != 0 )
+						sibling->m_right->m_color = black;
+					rb_tree_rotate_left( save_node_parent, root );
+					break ;
+				}
 			}
 			else
 			{
-				if ( sibling->m_left )
+				rb_tree_node_base *	sibling = save_node_parent->m_left;
+
+				if ( sibling->m_color == red )
 				{
-					rb_tree_rotate_right( node->m_parent, root );
-					node->m_parent->m_parent->m_color = node->m_parent->m_color;
-					sibling->m_left->m_color = black;
-					node->m_parent->m_color = black;
+					sibling->m_color = black;
+					save_node_parent->m_color = red;
+					rb_tree_rotate_right( save_node_parent, root );
+					sibling = save_node_parent->m_left;
+				}
+				if ( ( ( sibling->m_right == 0 ) ||\
+					   ( sibling->m_right->m_color == black ) ) &&\
+					 ( ( sibling->m_left == 0 ) ||\
+					   ( sibling->m_left->m_color == black ) ) )
+				{
+					sibling->m_color = red;
+					save_node = save_node_parent;
+					save_node_parent = save_node_parent->m_parent;
 				}
 				else
 				{
-					rb_tree_rotate_left( sibling, root );
-					rb_tree_rotate_right( node->m_parent, root );
-					node->m_parent->m_parent->m_color = node->m_parent->m_color;
-					node->m_parent->m_color = black;
+					if ( ( sibling->m_left == 0 ) ||\
+						 ( sibling->m_left->m_color == black ) )
+					{
+						sibling->m_right->m_color = black;
+						sibling->m_color = red;
+						rb_tree_rotate_left( sibling, root );
+						sibling = save_node_parent->m_left;
+					}
+					sibling->m_color = save_node_parent->m_color;
+					save_node_parent->m_color = black;
+					if ( sibling->m_left != 0 )
+						sibling->m_left->m_color = black;
+					rb_tree_rotate_right( save_node_parent, root );
+					break ;
 				}
 			}
 		}
-		node->m_parent->m_right = 0;
+		if ( save_node != 0 )
+			save_node->m_color = black;
 	}
-	return ( node );
+	save_node = node;
+
+	return ( save_node );
 }
