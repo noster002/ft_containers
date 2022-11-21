@@ -93,8 +93,7 @@ namespace ft
 			}
 			~vector( void )
 			{
-				for ( size_t	count = 0; count < this->size(); ++count )
-					this->m_alloc.destroy( this->m_alloc.m_start + count );
+				this->clear();
 				return ;
 			}
 
@@ -144,6 +143,8 @@ namespace ft
 				return ;
 			}
 
+			// allocator
+
 			allocator_type		get_allocator( void ) const
 			{
 				return ( allocator_type( this->get_type_alloc_type() ) );
@@ -162,7 +163,7 @@ namespace ft
 									 n, this->size() );
 					throw std::out_of_range( buffer );
 				}
-				return ( ( *this )[n] );
+				return ( ( *this )[ n ] );
 			}
 			const_reference		at( size_type n ) const
 			{
@@ -175,7 +176,7 @@ namespace ft
 									 n, this->size() );
 					throw std::out_of_range( buffer );
 				}
-				return ( ( *this )[n] );
+				return ( ( *this )[ n ] );
 			}
 			reference			operator[]( size_type n )
 			{

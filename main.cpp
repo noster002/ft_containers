@@ -55,5 +55,15 @@ int	main( void )
 	std::cout << "map3[ pair ].first: " << map3[ pair ].first << std::endl;
 	std::cout << "map3[ pair ].second: " << map3[ pair ].second << std::endl;
 
+	std::map< int, int >										m;
+	std::map< int, int >::iterator								it = ( m.begin() );
+
+	if ( it == m.end() )
+		std::cout << "m.begin() == m.end()" << std::endl;
+	m[ 3 ] = 6;
+	std::cout << "first: " << ( *it ).first << "\tsecond: " << ( *it ).second << std::endl;
+	it = m.begin();
+	std::cout << "first: " << ( *it ).first << "\tsecond: " << ( *it ).second << std::endl;
+
 	return ( 0 );
 }

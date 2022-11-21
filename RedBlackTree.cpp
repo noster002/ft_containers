@@ -6,17 +6,52 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 13:48:06 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/13 14:52:30 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/15 17:19:39 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RedBlackTree.hpp"
 
+rb_tree_node_base *	rb_tree_increment( rb_tree_node_base * node )
+{
+	if ( node->m_right != 0 )
+	{
+		node = node->m_right;
+		while ( node->m_left != 0 )
+			node = node->m_left;
+	}
+	else
+	{
+		while ( node->m_parent->m_right == node )
+			node = node->m_parent;
+		if ( node->m_right != node->m_parent )
+			node = node->m_parent;
+	}
+	return ( node );
+}
+
+rb_tree_node_base *	rb_tree_decrement( rb_tree_node_base * node )
+{
+	if ( ( node->m_parent->m_parent == node ) && ( node->m_color == red ) )
+		node = node->m_right;
+	else if ( node->m_left != 0 )
+	{
+		node = node->m_left;
+		while ( node->m_right != 0 )
+			node = node->m_right;
+	}
+	else
+	{
+		while ( node->m_parent->m_left == node )
+			node = node->m_parent;
+		node = node->m_parent;
+	}
+	return ( node );
+}
+
 void	rb_tree_rotate_left( rb_tree_node_base * const lhs,\
 							 rb_tree_node_base *& root )
 {
-	if ( ( lhs == 0 ) || ( lhs->m_right == 0 ) )
-		return ;
 	rb_tree_node_base * const	rhs = lhs->m_right;
 
 	lhs->m_right = rhs->m_left;
@@ -38,8 +73,6 @@ void	rb_tree_rotate_left( rb_tree_node_base * const lhs,\
 void	rb_tree_rotate_right( rb_tree_node_base * const rhs,\
 							  rb_tree_node_base *& root )
 {
-	if ( ( rhs == 0 ) || ( rhs->m_left == 0 ) )
-		return ;
 	rb_tree_node_base * const	lhs = rhs->m_left;
 
 	rhs->m_left = lhs->m_right;
@@ -64,6 +97,8 @@ void	rb_tree_insert_and_rebalance( bool const insert_left,\
 									  rb_tree_node_base & head )
 {
 	rb_tree_node_base *&	root = head.m_parent;
+	rb_tree_node_base *&	leftmost = head.m_left;
+	rb_tree_node_base *&	rightmost = head.m_right;
 
 	node->m_color = red;
 	node->m_parent = parent;
@@ -76,18 +111,18 @@ void	rb_tree_insert_and_rebalance( bool const insert_left,\
 
 		if ( parent == &head )
 		{
-			head.m_parent = node;
-			head.m_right = node;
+			root = node;
+			rightmost = node;
 		}
-		else if ( parent == head.m_left )
-			head.m_left = node;
+		else if ( leftmost == parent )
+			leftmost = node;
 	}
 	else
 	{
 		parent->m_right = node;
 
-		if ( parent == head.m_right )
-			head.m_right = node;
+		if ( rightmost == parent )
+			rightmost = node;
 	}
 	while ( ( node != root ) && ( node->m_parent->m_color == red ) )
 	{
