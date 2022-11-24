@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 22:04:43 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/23 12:22:47 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/24 19:30:00 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "equal.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+# include <iostream>
 
 enum rb_tree_color
 {
@@ -302,6 +303,23 @@ class rb_tree
 			return ;
 		}
 
+		node_ptr					m_copy_initialize( node_ptr node,\
+													   node_ptr parent,\
+													   const_node_ptr other_node )
+		{
+			if ( other_node == 0 )
+				node = 0;
+			else
+			{
+				node = this->m_create_node( other_node->m_value );
+				node->m_parent = parent;
+				node->m_color = other_node->m_color;
+				node->m_left = this->m_copy_initialize( s_left( node ), node, s_left( other_node ) );
+				node->m_right = this->m_copy_initialize( s_right( node ), node, s_right( other_node ) );
+			}
+			return ( node );
+		}
+
 		template< typename KeyCompare,\
 				  typename = typename ft::enable_if< \
 				  !( ft::is_integral< KeyCompare >::value ), bool >::type >
@@ -342,9 +360,7 @@ class rb_tree
 
 		rb_tree_allocator< compare_type >	m_alloc;
 
-	protected:
-
-		node_base_ptr				m_root( void )
+		node_base_ptr &				m_root( void )
 		{
 			return ( this->m_alloc.m_head.m_parent );
 		}
@@ -352,7 +368,7 @@ class rb_tree
 		{
 			return ( this->m_alloc.m_head.m_parent );
 		}
-		node_base_ptr				m_leftmost( void )
+		node_base_ptr &				m_leftmost( void )
 		{
 			return ( this->m_alloc.m_head.m_left );
 		}
@@ -360,13 +376,13 @@ class rb_tree
 		{
 			return ( this->m_alloc.m_head.m_left );
 		}
-		node_base_ptr				m_rightmost( void )
+		node_base_ptr &				m_rightmost( void )
 		{
-			return ( this->m_alloc.m_head.m_rightmost );
+			return ( this->m_alloc.m_head.m_right );
 		}
 		const_node_base_ptr			m_rightmost( void ) const
 		{
-			return ( this->m_alloc.m_head.m_rightmost );
+			return ( this->m_alloc.m_head.m_right );
 		}
 
 		node_ptr					m_start( void )
@@ -435,18 +451,25 @@ class rb_tree
 		rb_tree( rb_tree const & other )\
 		 : m_alloc( other.m_alloc.m_key_compare, other.get_node_allocator() )
 		{
-			// if not empty copy ( elements, node count, leftmost, rightmost )
+			*this = other;
+			return ;
 		}
 		~rb_tree( void )
 		{
-			// erase
+			this->clear();
+			return ;
 		}
 
 		rb_tree &					operator=( rb_tree const & rhs )
 		{
 			if ( this != &rhs )
 			{
-				
+				this->clear();
+				this->m_alloc.m_head.m_parent = \
+					this->m_copy_initialize( static_cast< node_ptr >( this->m_root() ),\
+											 this->m_finish(),\
+											 static_cast< const_node_ptr >( rhs.m_root() ) );
+				this->m_alloc.m_node_count = rhs.m_alloc.m_node_count;
 			}
 			return ( *this );
 		}
@@ -505,7 +528,7 @@ class rb_tree
 			return ( this->get_node_allocator().max_size() );
 		}
 
-	protected:
+	private:
 
 		iterator					m_insert( node_base_ptr node,\
 											  node_base_ptr parent,\
@@ -527,15 +550,15 @@ class rb_tree
 				node_base_ptr	left = s_left( node );
 
 				this->m_erase( s_right( node ) );
-				m_destroy_node( node );
+				this->m_destroy_node( static_cast< node_ptr >( node ) );
 				node = left;
 			}
 			return ;
 		}
 
-		// modifiers
-
 	public:
+
+		// modifiers
 
 		typename ft::pair< iterator, bool >\
 			insert( value_type const & value )
@@ -618,10 +641,10 @@ class rb_tree
 		}
 		void						clear( void )
 		{
-			m_erase( this->start() );
-			this->root() = 0;
-			this->leftmost() = this->finish();
-			this->rightmost() = this->finish();
+			this->m_erase( this->m_start() );
+			this->m_root() = 0;
+			this->m_leftmost() = this->m_finish();
+			this->m_rightmost() = this->m_finish();
 			this->m_alloc.m_node_count = 0;
 			return ;
 		}

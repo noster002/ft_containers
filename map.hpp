@@ -102,7 +102,7 @@ namespace ft
 			typedef typename tree_type::iterator						iterator;
 			typedef typename tree_type::const_iterator					const_iterator;
 			typedef typename tree_type::reverse_iterator				reverse_iterator;
-			typedef typename tree_type::reverse_iterator				const_reverse_iterator;
+			typedef typename tree_type::const_reverse_iterator			const_reverse_iterator;
 			typedef typename tree_type::difference_type					difference_type;
 			typedef typename tree_type::size_type						size_type;
 
@@ -127,7 +127,8 @@ namespace ft
 				 bool >::type * = NULL )\
 			 : m_rb_tree( comp, alloc )
 			{
-				// initialize by iterator
+				this->insert( first, last );
+				return ;
 			}
 			map( map const & other )\
 			 : m_rb_tree( other.m_rb_tree )
@@ -145,9 +146,7 @@ namespace ft
 			map &						operator=( map const & rhs )
 			{
 				if ( this != &rhs )
-				{
-					// either assign or destroy elements
-				}
+					this->m_rb_tree = rhs.m_rb_tree;
 				return ( *this );
 			}
 
@@ -164,8 +163,10 @@ namespace ft
 			{
 				if ( this->find( key ) == this->end() )
 				{
-					// message
-					throw std::out_of_range();
+					char	buffer[1024];
+
+					sprintf( buffer, "map key does not exist" );
+					throw std::out_of_range( buffer );
 				}
 				return ( ( *this )[ key ] );
 			}
@@ -173,8 +174,10 @@ namespace ft
 			{
 				if ( this->find( key ) == this->end() )
 				{
-					// message
-					throw std::out_of_range();
+					char	buffer[1024];
+
+					sprintf( buffer, "map key does not exist" );
+					throw std::out_of_range( buffer );
 				}
 				return ( ( *this )[ key ] );
 			}
@@ -205,19 +208,19 @@ namespace ft
 			}
 			reverse_iterator			rbegin( void )
 			{
-				return ( this->m_rb_tree.rend() );
+				return ( this->m_rb_tree.rbegin() );
 			}
 			const_reverse_iterator		rbegin( void ) const
 			{
-				return ( this->m_rb_tree.rend() );
+				return ( this->m_rb_tree.rbegin() );
 			}
 			reverse_iterator			rend( void )
 			{
-				return ( this->m_rb_tree.rbegin() );
+				return ( this->m_rb_tree.rend() );
 			}
 			const_reverse_iterator		rend( void ) const
 			{
-				return ( this->m_rb_tree.rbegin() );
+				return ( this->m_rb_tree.rend() );
 			}
 
 			// capacity
