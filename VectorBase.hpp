@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 00:13:52 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/17 14:30:53 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:21:34 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ class VectorBase
 
 		type_alloc_type &			get_type_alloc_type( void )
 		{
-			return ( this->m_alloc );
+			return ( *( static_cast< type_alloc_type * >( &( this->m_alloc ) ) ) );
 		}
 		type_alloc_type const &		get_type_alloc_type( void ) const
 		{
-			return ( this->m_alloc );
+			return ( *( static_cast< type_alloc_type const * >( &( this->m_alloc ) ) ) );
 		}
 
 		typename type_alloc_type::pointer	vAllocate( size_type n )

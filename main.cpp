@@ -18,6 +18,7 @@
 #include <map>
 #include <bitset>
 #include "vector.hpp"
+#include "map.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 #include "iterator_traits.hpp"
@@ -61,9 +62,8 @@ int	main( void )
 	if ( it == m.end() )
 		std::cout << "m.begin() == m.end()" << std::endl;
 	m[ 3 ] = 6;
-	std::cout << "first: " << ( *it ).first << "\tsecond: " << ( *it ).second << std::endl;
 	it = m.begin();
-	std::cout << "first: " << ( *it ).first << "\tsecond: " << ( *it ).second << std::endl;
+	std::cout << "first: " << it->first << "\tsecond: " << ( *it ).second << std::endl;
 
 	return ( 0 );
 }

@@ -2,7 +2,7 @@ CC			= c++
 CFLAGS		= -Wall -Werror -Wextra -std=c++98 -pedantic-errors
 RM			= rm -f
 NAME		= test
-SRC			= main.cpp
+SRC			= main.cpp RedBlackTree.cpp
 OBJ			= $(SRC:.cpp=.o)
 
 all:		$(NAME)
