@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 13:48:06 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/15 17:19:39 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/28 20:27:20 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	rb_tree_rotate_right( rb_tree_node_base * const rhs,\
 	rb_tree_node_base * const	lhs = rhs->m_left;
 
 	rhs->m_left = lhs->m_right;
-	if ( lhs->m_left != 0 )
-		lhs->m_left->m_parent = rhs;
+	if ( lhs->m_right != 0 )
+		lhs->m_right->m_parent = rhs;
 	lhs->m_parent = rhs->m_parent;
 	if ( rhs == root )
 		root = lhs;

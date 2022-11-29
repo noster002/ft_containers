@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 22:04:43 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/24 19:30:00 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/28 20:28:59 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,14 @@ struct rb_tree_const_iterator
 };
 
 template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+class rb_tree;
+
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+std::ostream &	operator<<( std::ostream & out, \
+							rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs );
+
+
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
 class rb_tree
 {
 
@@ -434,6 +442,10 @@ class rb_tree
 		{
 			return ( static_cast< const_node_ptr >( node->m_right ) );
 		}
+		friend std::ostream &	operator<< <>( std::ostream & out, \
+											   rb_tree< Key, Val, KeyOfValue, Compare, Allocator >\
+											   const & rhs );
+
 
 	public:
 
@@ -587,21 +599,21 @@ class rb_tree
 		}
 		iterator					insert( iterator position, value_type const & value )
 		{
-			if ( position == this->m_head() )
+			if ( position == this->end() )
 			{
 				if ( ( this->size() > 0 ) &&\
-					 ( this->m_alloc.m_key_compare( s_key( this->rightmost() ),\
+					 ( this->m_alloc.m_key_compare( s_key( this->m_rightmost() ),\
 													  keyofvalue()( value ) ) ) )
-					return ( this->m_insert( 0, this->rightmost(), value ) );
-				return ( this->insert( value ) );
+					return ( this->m_insert( 0, this->m_rightmost(), value ) );
+				return ( this->insert( value ).first );
 			}
 			else if ( this->m_alloc.m_key_compare( keyofvalue()( value ),\
 												   s_key( position.m_current ) ) )
 			{
 				iterator	before = position;
 
-				if ( position.m_current == this->leftmost() )
-					return ( this->m_insert( this->leftmost(), this->leftmost(), value ) );
+				if ( position.m_current == this->m_leftmost() )
+					return ( this->m_insert( this->m_leftmost(), this->m_leftmost(), value ) );
 				else if ( this->m_alloc.m_key_compare( s_key( ( --before ).m_current ),\
 													   keyofvalue()( value ) ) )
 				{
@@ -609,15 +621,15 @@ class rb_tree
 						return ( this->m_insert( 0, before.m_current, value ) );
 					return ( this->m_insert( position.m_current, position.m_current, value ) );
 				}
-				return ( this->insert( value ) );
+				return ( this->insert( value ).first );
 			}
 			else if ( this->m_alloc.m_key_compare( s_key( position.m_current ),\
 												   keyofvalue()( value ) ) )
 			{
 				iterator	after = position;
 
-				if ( position.m_current == this->rightmost() )
-					return ( this->m_insert( this->rightmost(), this->rightmost(), value ) );
+				if ( position.m_current == this->m_rightmost() )
+					return ( this->m_insert( this->m_rightmost(), this->m_rightmost(), value ) );
 				else if ( this->m_alloc.m_key_compare( keyofvalue()( value ),\
 													   s_key( ( ++after ).m_current ) ) )
 				{
@@ -625,7 +637,7 @@ class rb_tree
 						return ( this->m_insert( 0, position.m_current, value ) );
 					return ( this->m_insert( after.m_current, after.m_current, value ) );
 				}
-				return ( this->insert( value ) );
+				return ( this->insert( value ).first );
 			}
 			return ( position );
 		}
@@ -803,54 +815,96 @@ class rb_tree
 
 // compare
 
-template< typename Key, typename T, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator==( rb_tree< Key, T, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, T, KeyOfValue, Compare, Allocator > & rhs )
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+bool		operator==( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
 {
 	return ( ( lhs.size() == rhs.size() ) && \
 			   ft::equal( lhs.begin(), lhs.end(), rhs.begin() ) );
 }
-template< typename Key, typename T, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator!=( rb_tree< Key, T, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, T, KeyOfValue, Compare, Allocator > & rhs )
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+bool		operator!=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
 {
 	return ( !( lhs == rhs ) );
 }
 
-template< typename Key, typename T, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator<( rb_tree< Key, T, KeyOfValue, Compare, Allocator > & lhs,\
-					   rb_tree< Key, T, KeyOfValue, Compare, Allocator > & rhs )
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+bool		operator<( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
+					   rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
 {
 	return ( ft::lexicographical_compare( lhs.begin(), lhs.end(), \
 										  rhs.begin(), rhs.end() ) );
 }
-template< typename Key, typename T, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator<=( rb_tree< Key, T, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, T, KeyOfValue, Compare, Allocator > & rhs )
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+bool		operator<=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
 {
 	return ( !( rhs < lhs ) );
 }
-template< typename Key, typename T, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator>( rb_tree< Key, T, KeyOfValue, Compare, Allocator > & lhs,\
-					   rb_tree< Key, T, KeyOfValue, Compare, Allocator > & rhs )
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+bool		operator>( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
+					   rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
 {
 	return ( ( rhs < lhs ) );
 }
-template< typename Key, typename T, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator>=( rb_tree< Key, T, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, T, KeyOfValue, Compare, Allocator > & rhs )
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+bool		operator>=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
 {
 	return ( !( lhs < rhs ) );
 }
 
 // swap
 
-template< typename Key, typename T, typename KeyOfValue, typename Compare, typename Allocator >
-void				swap( rb_tree< Key, T, KeyOfValue, Compare, Allocator > & lhs,\
-						  rb_tree< Key, T, KeyOfValue, Compare, Allocator > & rhs )
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+void				swap( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
+						  rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
 {
 	lhs.swap( rhs );
 	return ;
+}
+
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+void				ostream_helper( std::ostream & out, \
+									typename rb_tree< Key, Val, KeyOfValue, Compare, Allocator >\
+									::const_node_ptr node, int level )
+{
+	if ( node != 0 )
+	{
+		for ( int	i = 0; i < ( level - 1 ); ++i )
+			out << "\t";
+		if ( level > 0 )
+		{
+			out << " |______\n";
+			for ( int	i = 0; i < level; ++i )
+				out << "\t";
+		}
+		out << "`";
+		if ( node->m_color == black )
+			out << "\033[1;30m";
+		else
+			out << "\033[1;31m";
+		out << node->m_value.first << "\033[0m" << std::endl;
+		++level;
+		ostream_helper< Key, Val, KeyOfValue, Compare, Allocator >\
+		( out, static_cast< typename rb_tree< Key, Val, KeyOfValue, Compare, Allocator >\
+		  ::const_node_ptr >( node->m_right ), level );
+		ostream_helper< Key, Val, KeyOfValue, Compare, Allocator >\
+		( out, static_cast< typename rb_tree< Key, Val, KeyOfValue, Compare, Allocator >\
+		  ::const_node_ptr >( node->m_left ), level );
+	}
+	return ;
+}
+
+template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
+std::ostream &		operator<<( std::ostream & out, \
+								rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs )
+{
+	ostream_helper< Key, Val, KeyOfValue, Compare, Allocator >\
+	( out, static_cast< typename rb_tree< Key, Val, KeyOfValue, Compare, Allocator >\
+									  ::const_node_ptr >( rhs.m_root() ), 0 );
+	return ( out );
 }
 
 #endif

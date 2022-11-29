@@ -165,5 +165,98 @@ int	main( void )
 		std::cout << "( --( map.end() ) )->first == ( map.rbegin() )->first" << std::endl;
 	std::cout << std::endl;
 
+	ft::pair< unsigned int, int >				pair( 3, 4 );
+
+	map.insert( pair );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map.insert( ft::make_pair( 6, -24 ) );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map.insert( ft::make_pair( 7, 40 ) );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map.insert( ft::make_pair( 13, 50 ) );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	ft::map< unsigned int, int >::iterator		position = map.begin();
+	while( position->first != 7 )
+		++position;
+	std::cout << position->first << " " << position->second << std::endl;
+
+	map.insert( position, ft::make_pair( 9, 83 ) );
+
+	position = map.begin();
+	std::cout << ( position++ )->first << std::endl;
+	std::cout << ( position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << ( ++position )->first << std::endl;
+	std::cout << std::endl;
+	position = map.end();
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	position--;
+	std::cout << ( position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+	std::cout << ( --position )->first << std::endl;
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << map << std::endl;
+
 	return ( 0 );
 }

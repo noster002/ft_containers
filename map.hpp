@@ -23,6 +23,19 @@
 namespace ft
 {
 
+	template< typename Key, typename T, typename Compare, typename Allocator >
+	class map;
+
+}
+
+template< typename Key, typename T, typename Compare, typename Allocator >
+std::ostream &	operator<<( std::ostream & out, \
+							ft::map< Key, T, Compare, Allocator > const & rhs );
+
+
+namespace ft
+{
+
 	template<\
 			 typename Key,\
 			 typename T,\
@@ -341,6 +354,11 @@ namespace ft
 				return ( value_compare( key_comp() ) );
 			}
 
+		private:
+
+			friend std::ostream &	operator<< <>( std::ostream & out, \
+												   map< Key, T, Compare, Allocator > const & rhs );
+
 	};
 
 	// compare
@@ -386,13 +404,21 @@ namespace ft
 	// swap
 
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	void				swap( map< Key, T, Compare, Allocator > & lhs,\
-							  map< Key, T, Compare, Allocator > & rhs )
+	void		swap( map< Key, T, Compare, Allocator > & lhs,\
+					  map< Key, T, Compare, Allocator > & rhs )
 	{
 		lhs.swap( rhs );
 		return ;
 	}
 
+}
+
+template< typename Key, typename T, typename Compare, typename Allocator >
+std::ostream &	operator<<( std::ostream & out, \
+							ft::map< Key, T, Compare, Allocator > const & rhs )
+{
+	out << rhs.m_rb_tree;
+	return ( out );
 }
 
 #endif
