@@ -6,13 +6,15 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 22:22:09 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/24 19:32:25 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:23:37 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 
 	ft::map< unsigned int, int >	map;
+
+	std::cout << "map: max_size: " << map.max_size() << std::endl << std::endl;
 
 	map[ 3 ] = 3;
 	std::cout << "map[ 3 ]: " << map[ 3 ] << std::endl;
@@ -146,6 +148,392 @@
 	if ( ( --( map.end() ) )->first == ( map.rbegin() )->first )
 		std::cout << "( --( map.end() ) )->first == ( map.rbegin() )->first" << std::endl;
 	std::cout << std::endl;
+
+	ft::pair< unsigned int, int >				pair( 3, 4 );
+
+	map.insert( pair );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map.insert( ft::make_pair( 6, -24 ) );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	ft::pair< ft::map< unsigned int, int >::iterator, bool >	ret;
+
+	ret = map.insert( ft::make_pair( 7, 40 ) );
+
+	std::cout << std::boolalpha << ret.second << std::endl;
+	std::cout << ret.first->first << " " << ret.first->second << std::endl;
+
+	ret = map.insert( ft::make_pair( 7, 5 ) );
+
+	std::cout << ret.second << std::endl;
+	std::cout << ret.first->first << " " << ret.first->second << std::endl;
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map.insert( ft::make_pair( 13, 50 ) );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	ft::map< unsigned int, int >::iterator		position = map.find( 7 );
+	std::cout << position->first << " " << position->second << std::endl;
+
+	position = map.insert( position, ft::make_pair( 9, 83 ) );
+
+	std::cout << position->first << " " << position->second << std::endl;
+
+	position = map.insert( position, ft::make_pair( 9, 37 ) );
+
+	std::cout << position->first << " " << position->second << std::endl;
+
+	map.insert( position, ft::make_pair( 8, 73 ) );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map2:" << std::endl;
+	std::cout << "size: " << map2.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map2.insert( position, map.end() );
+
+	std::cout << "map2:" << std::endl;
+	std::cout << "size: " << map2.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map:" << std::endl;
+
+	std::cout << position->first << " " << position->second << std::endl;
+
+	map.erase( position );
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map.erase( map.begin() );
+
+	std::cout << map.begin()->first << " " << map.begin()->second << std::endl;
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << map.count( 12 ) << std::endl;
+
+	position = map.find( 8 );
+
+	map.erase( position, ( --( map.end() ) ) );
+
+	std::cout << map.count( 12 ) << std::endl;
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	if ( map.erase( 2 ) == 1 )
+		std::cout << "erase" << std::endl;
+
+	if ( map.erase( 2 ) == 0 )
+		std::cout << "no erase" << std::endl;
+
+	if ( map.erase( 4 ) == 1 )
+		std::cout << "erase" << std::endl;
+
+	if ( map.erase( 11 ) == 0 )
+		std::cout << "no erase" << std::endl;
+
+	std::cout << map.begin()->first << " " << map.begin()->second << std::endl;
+
+	std::cout << "size: " << map.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map.begin(); it != map.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map1:" << std::endl;
+	std::cout << "size: " << map1.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map1.begin(); it != map1.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map1.begin(); it != map1.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map2:" << std::endl;
+	std::cout << "size: " << map2.size() << std::endl;
+	for ( ft::map< unsigned int, int >::const_iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::const_iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map3:" << std::endl;
+	std::cout << "size: " << map3.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map3.begin(); it != map3.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map3.begin(); it != map3.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map4:" << std::endl;
+	std::cout << "size: " << map4.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map4.begin(); it != map4.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map4.begin(); it != map4.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	if ( !( map3.empty() ) )
+		std::cout << "map3 not empty" << std::endl;
+
+	map3.clear();
+
+	if ( map3.empty() )
+		std::cout << "map3 empty" << std::endl;
+
+	map1.swap( map2 );
+
+	std::swap( map4, map3 );
+
+	map4.swap( map2 );
+
+	if ( map2.empty() )
+		std::cout << "map2 empty" << std::endl;
+
+	std::cout << "map1:" << std::endl;
+	std::cout << "size: " << map1.size() << std::endl;
+	for ( ft::map< unsigned int, int >::const_iterator	it = map1.begin(); it != map1.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map1.begin(); it != map1.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map2:" << std::endl;
+	std::cout << "size: " << map2.size() << std::endl;
+	for ( ft::map< unsigned int, int >::const_iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map3:" << std::endl;
+	std::cout << "size: " << map3.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map3.begin(); it != map3.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map3.begin(); it != map3.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map4:" << std::endl;
+	std::cout << "size: " << map4.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map4.begin(); it != map4.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map4.begin(); it != map4.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	map4.clear();
+
+	map2.swap( map4 );
+
+	std::cout << "map2:" << std::endl;
+	std::cout << "size: " << map2.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map2.begin(); it != map2.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	std::cout << "map4:" << std::endl;
+	std::cout << "size: " << map4.size() << std::endl;
+	for ( ft::map< unsigned int, int >::iterator	it = map4.begin(); it != map4.end(); ++it )
+		std::cout << it->first << "\t";
+	std::cout << std::endl;
+	for ( ft::map< unsigned int, int >::const_iterator	it = map4.begin(); it != map4.end(); ++it )
+		std::cout << it->second << "\t";
+	std::cout << std::endl;
+
+	ft::map< unsigned int, int >::iterator			m_it = map.find( 7 );
+	ft::map< unsigned int, int >::const_iterator	m_cit = map.find( 13 );
+
+	std::cout << m_it->first << " " << m_it->second << std::endl;
+	std::cout << m_cit->first << " " << m_cit->second << std::endl;
+
+	m_it = map.find( 8 );
+	m_cit = map.find( 14 );
+
+	if ( m_it == map.end() )
+		std::cout << "m_it == map.end()" << std::endl;
+	if ( m_cit == map.end() )
+		std::cout << "m_cit == map.end()" << std::endl;
+
+	ft::pair< ft::map< unsigned int, int >::iterator,\
+			  ft::map< unsigned int, int >::iterator >			pair_it;
+
+	pair_it = map.equal_range( 7 );
+	m_it = map.lower_bound( 7 );
+
+	if ( pair_it.first == m_it )
+		std::cout << "pair_it.first == m_it" << std::endl;
+	std::cout << m_it->first << " " << m_it->second << std::endl;
+
+	m_it = map.upper_bound( 7 );
+	if ( pair_it.second == m_it )
+		std::cout << "pair_it.second == m_it" << std::endl;
+	std::cout << m_it->first << " " << m_it->second << std::endl;
+
+	ft::pair< ft::map< unsigned int, int >::const_iterator,\
+			  ft::map< unsigned int, int >::const_iterator >	pair_cit;
+
+	pair_cit = map.equal_range( 4 );
+	m_cit = map.lower_bound( 4 );
+
+	if ( pair_cit.first == m_cit )
+		std::cout << "pair_cit.first == m_cit" << std::endl;
+	std::cout << m_cit->first << " " << m_cit->second << std::endl;
+
+	m_cit = map.upper_bound( 4 );
+	if ( pair_cit.second == m_cit )
+		std::cout << "pair_cit.second == m_cit" << std::endl;
+	std::cout << m_cit->first << " " << m_cit->second << std::endl;
+
+	typename ft::map< unsigned int, int >::key_compare		key_comp = map.key_comp();
+
+	if ( key_comp( 1, 2 ) )
+		std::cout << "1 < 2" << std::endl;
+	if ( !key_comp( 2, 2 ) )
+		std::cout << "!( 2 < 2 )" << std::endl;
+	if ( !key_comp( 2, 1 ) )
+		std::cout << "!( 2 < 1 )" << std::endl;
+
+	typename ft::map< unsigned int, int >::value_compare	val_comp = map.value_comp();
+	ft::pair< unsigned int, int >							val1( ft::make_pair( 1, 2 ) );
+	ft::pair< unsigned int, int >							val2( ft::make_pair( 2, 1 ) );
+
+	if ( val_comp( val1, val2 ) )
+		std::cout << "1 < 2" << std::endl;
+	if ( !val_comp( val2, val2 ) )
+		std::cout << "!( 2 < 2 )" << std::endl;
+	if ( !val_comp( val2, val1 ) )
+		std::cout << "!( 2 < 1 )" << std::endl;
+
+	if ( map1 == map2 )
+		std::cout << "map1 == map2" << std::endl;
+	if ( map1 != map2 )
+		std::cout << "map1 != map2" << std::endl;
+	if ( map1 < map2 )
+		std::cout << "map1 < map2" << std::endl;
+	if ( map1 > map2 )
+		std::cout << "map1 > map2" << std::endl;
+	if ( map1 <= map2 )
+		std::cout << "map1 <= map2" << std::endl;
+	if ( map1 >= map2 )
+		std::cout << "map1 >= map2" << std::endl;
+
+	if ( map2 == map1 )
+		std::cout << "map2 == map1" << std::endl;
+	if ( map2 != map1 )
+		std::cout << "map2 != map1" << std::endl;
+	if ( map2 < map1 )
+		std::cout << "map2 < map1" << std::endl;
+	if ( map2 > map1 )
+		std::cout << "map2 > map1" << std::endl;
+	if ( map2 <= map1 )
+		std::cout << "map2 <= map1" << std::endl;
+	if ( map2 >= map1 )
+		std::cout << "map2 >= map1" << std::endl;
+
+	if ( map1 == map1 )
+		std::cout << "map1 == map1" << std::endl;
+	if ( map1 != map1 )
+		std::cout << "map1 != map1" << std::endl;
+	if ( map1 < map1 )
+		std::cout << "map1 < map1" << std::endl;
+	if ( map1 > map1 )
+		std::cout << "map1 > map1" << std::endl;
+	if ( map1 <= map1 )
+		std::cout << "map1 <= map1" << std::endl;
+	if ( map1 >= map1 )
+		std::cout << "map1 >= map1" << std::endl;
+
+	ft::map< unsigned int, int >::allocator_type	alloc = map.get_allocator();
+
+	ft::pair< unsigned int const, int > *			p = alloc.allocate( 1 );
+
+	p->second = 5;
+
+	std::cout << p->first << " " << p->second << std::endl;
+
+	alloc.construct( p, val1 );
+
+	std::cout << p->first << " " << p->second << std::endl;
+
+	alloc.destroy( p );
+	alloc.deallocate( p, 1 );
 
 */
 

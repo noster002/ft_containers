@@ -6,13 +6,14 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 22:04:43 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/28 20:28:59 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:49:43 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RB_TREE_HPP
 # define RB_TREE_HPP
 # include <algorithm>
+# include <iostream>
 # include "reverse_iterator.hpp"
 # include "pair.hpp"
 # include "make_pair.hpp"
@@ -20,7 +21,6 @@
 # include "equal.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
-# include <iostream>
 
 enum rb_tree_color
 {
@@ -156,6 +156,8 @@ struct rb_tree_const_iterator
 	typedef std::bidirectional_iterator_tag	iterator_category;
 	typedef std::ptrdiff_t					difference_type;
 
+	typedef rb_tree_iterator< Val >			iterator;
+
 	typedef rb_tree_node< Val > const *		node_ptr;
 	typedef rb_tree_node_base const *		node_base_ptr;
 
@@ -166,6 +168,10 @@ struct rb_tree_const_iterator
 		return ;
 	}
 	explicit rb_tree_const_iterator( node_ptr const & p ) : m_current( p )
+	{
+		return ;
+	}
+	rb_tree_const_iterator( iterator const & it ) : m_current( it.m_current )
 	{
 		return ;
 	}
@@ -196,12 +202,12 @@ struct rb_tree_const_iterator
 
 	rb_tree_const_iterator &	operator++( void )
 	{
-		this->m_current = rb_tree_increment( this->m_current );
+		this->m_current = rb_tree_increment( const_cast< rb_tree_node_base * >( this->m_current ) );
 		return ( *this );
 	}
 	rb_tree_const_iterator &	operator--( void )
 	{
-		this->m_current = rb_tree_decrement( this->m_current );
+		this->m_current = rb_tree_decrement( const_cast< rb_tree_node_base * >( this->m_current ) );
 		return ( *this );
 	}
 	rb_tree_const_iterator		operator++( int )
@@ -311,21 +317,45 @@ class rb_tree
 			return ;
 		}
 
-		node_ptr					m_copy_initialize( node_ptr node,\
+		void						m_copy_initialize( bool insert_left,\
+													   node_ptr node,\
 													   node_ptr parent,\
+													   node_ptr head,\
 													   const_node_ptr other_node )
 		{
 			if ( other_node == 0 )
 				node = 0;
 			else
 			{
-				node = this->m_create_node( other_node->m_value );
+				node = m_create_node( other_node->m_value );
+
+				if  ( insert_left )
+				{
+					parent->m_left = node;
+
+					if ( parent == head )
+					{
+						head->m_parent = node;
+						head->m_right = node;
+					}
+					else if ( parent == head->m_left )
+						head->m_left = node;
+				}
+				else
+				{
+					parent->m_right = node;
+
+					if ( parent == head->m_right )
+						head->m_right = node;
+				}
 				node->m_parent = parent;
 				node->m_color = other_node->m_color;
-				node->m_left = this->m_copy_initialize( s_left( node ), node, s_left( other_node ) );
-				node->m_right = this->m_copy_initialize( s_right( node ), node, s_right( other_node ) );
+				node->m_left = 0;
+				node->m_right = 0;
+				m_copy_initialize( true, s_left( node ), node, head, s_left( other_node ) );
+				m_copy_initialize( false, s_right( node ), node, head, s_right( other_node ) );
 			}
-			return ( node );
+			return ;
 		}
 
 		template< typename KeyCompare,\
@@ -442,6 +472,7 @@ class rb_tree
 		{
 			return ( static_cast< const_node_ptr >( node->m_right ) );
 		}
+
 		friend std::ostream &	operator<< <>( std::ostream & out, \
 											   rb_tree< Key, Val, KeyOfValue, Compare, Allocator >\
 											   const & rhs );
@@ -477,10 +508,8 @@ class rb_tree
 			if ( this != &rhs )
 			{
 				this->clear();
-				this->m_alloc.m_head.m_parent = \
-					this->m_copy_initialize( static_cast< node_ptr >( this->m_root() ),\
-											 this->m_finish(),\
-											 static_cast< const_node_ptr >( rhs.m_root() ) );
+				this->m_copy_initialize( true, this->m_start(), this->m_finish(),\
+										 this->m_finish(), rhs.m_start() );
 				this->m_alloc.m_node_count = rhs.m_alloc.m_node_count;
 			}
 			return ( *this );
@@ -672,8 +701,8 @@ class rb_tree
 					this->m_root()->m_parent = this->m_finish();
 
 					other.m_root() = 0;
-					other.m_root() = other.m_finish();
-					other.m_root() = other.m_finish();
+					other.m_leftmost() = other.m_finish();
+					other.m_rightmost() = other.m_finish();
 				}
 			}
 			else if ( other.m_root() == 0 )
@@ -707,7 +736,7 @@ class rb_tree
 		{
 			ft::pair< const_iterator, const_iterator >	pair = this->equal_range( key );
 			size_type									n = \
-				size_type( std::distance( pair.first, pair.last ) );
+				size_type( std::distance( pair.first, pair.second ) );
 
 			return ( n );
 		}
@@ -809,6 +838,11 @@ class rb_tree
 					node = s_right( node );
 			}
 			return ( const_iterator( parent ) );
+		}
+
+		compare_type					key_comp( void ) const
+		{
+			return ( this->m_alloc.m_key_compare );
 		}
 
 };

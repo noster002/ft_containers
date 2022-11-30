@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 13:48:06 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/28 20:27:20 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/11/29 16:33:18 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ rb_tree_node_base *	rb_tree_rebalance_for_erase( rb_tree_node_base * const node,
 	if ( ( node->m_left != 0 ) && ( node->m_right != 0 ) )
 	{
 		new_node = node->m_right;
-		while ( new_node != 0 )
+		while ( new_node->m_left != 0 )
 			new_node = new_node->m_left;
 		save_node = new_node->m_right;
 		node->m_left->m_parent = new_node;
@@ -203,7 +203,7 @@ rb_tree_node_base *	rb_tree_rebalance_for_erase( rb_tree_node_base * const node,
 			save_node_parent = new_node->m_parent;
 			if ( save_node != 0 )
 				save_node->m_parent = new_node->m_parent;
-			save_node->m_parent->m_left = save_node;
+			new_node->m_parent->m_left = save_node;
 			new_node->m_right = node->m_right;
 			node->m_right->m_parent = new_node;
 		}
@@ -242,9 +242,9 @@ rb_tree_node_base *	rb_tree_rebalance_for_erase( rb_tree_node_base * const node,
 		else
 		{
 			if ( leftmost == node )
-				leftmost = &head;
+				leftmost = node->m_parent;
 			if ( rightmost == node )
-				rightmost = &head;
+				rightmost = node->m_parent;
 		}
 		save_node = new_node;
 	}

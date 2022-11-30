@@ -26,6 +26,13 @@ namespace ft
 	template< typename Key, typename T, typename Compare, typename Allocator >
 	class map;
 
+	template< typename Key, typename T, typename Compare, typename Allocator >
+	bool			operator==( map< Key, T, Compare, Allocator > & lhs,\
+								map< Key, T, Compare, Allocator > & rhs );
+	template< typename Key, typename T, typename Compare, typename Allocator >
+	bool			operator<( map< Key, T, Compare, Allocator > & lhs,\
+							   map< Key, T, Compare, Allocator > & rhs );
+
 }
 
 template< typename Key, typename T, typename Compare, typename Allocator >
@@ -248,14 +255,14 @@ namespace ft
 			}
 			size_type					max_size( void ) const
 			{
-				return ( this->get_allocator().max_size() );
+				return ( this->m_rb_tree.max_size() );
 			}
 
 			// modifiers
 
 			void						clear( void )
 			{
-				this->m_rb_tree.insert.clear();
+				this->m_rb_tree.clear();
 			}
 			ft::pair< iterator, bool >	insert( value_type const & value )
 			{
@@ -347,14 +354,19 @@ namespace ft
 
 			key_compare					key_comp( void ) const
 			{
-				return ( this->m_rb_tree.m_alloc.m_key_compare );
+				return ( this->m_rb_tree.key_comp() );
 			}
 			value_compare				value_comp( void ) const
 			{
-				return ( value_compare( key_comp() ) );
+				return ( value_compare( this->m_rb_tree.key_comp() ) );
 			}
 
 		private:
+
+			friend bool	operator== <>( map< Key, T, Compare, Allocator > & lhs,\
+									   map< Key, T, Compare, Allocator > & rhs );
+			friend bool	operator< <>( map< Key, T, Compare, Allocator > & lhs,\
+									  map< Key, T, Compare, Allocator > & rhs );
 
 			friend std::ostream &	operator<< <>( std::ostream & out, \
 												   map< Key, T, Compare, Allocator > const & rhs );
