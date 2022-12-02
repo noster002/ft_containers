@@ -264,7 +264,7 @@ namespace ft
 			{
 				this->m_rb_tree.clear();
 			}
-			ft::pair< iterator, bool >	insert( value_type const & value )
+			pair< iterator, bool >		insert( value_type const & value )
 			{
 				return ( this->m_rb_tree.insert( value ) );
 			}
@@ -291,7 +291,7 @@ namespace ft
 			}
 			size_type					erase( key_type const & key )
 			{
-				iterator	victim = find( key );
+				iterator	victim = this->find( key );
 
 				if ( victim == this->end() )
 					return ( 0 );
@@ -373,7 +373,7 @@ namespace ft
 
 	};
 
-	// compare
+	// relational operators
 
 	template< typename Key, typename T, typename Compare, typename Allocator >
 	bool		operator==( map< Key, T, Compare, Allocator > & lhs,\

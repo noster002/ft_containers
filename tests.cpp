@@ -6,9 +6,23 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 22:22:09 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/30 21:38:49 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/12/01 13:15:48 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+
+	ft::map< int, int, mycompare< int >, myallocator< char > > map;
+
+	map.insert( ft::make_pair( 50, 70 ) );
+	map.insert( ft::make_pair( 4, 10 ) );
+
+	if ( map.count( 4 ) )
+		std::cout << map[ 4 ] << std::endl;
+	if ( map.count( 50 ) )
+		std::cout << map[ 50 ] << std::endl;
+
+*/
 
 /*
 
