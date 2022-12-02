@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 12:48:23 by nosterme          #+#    #+#             */
-/*   Updated: 2022/12/01 15:14:30 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:29:53 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ namespace ft
 			typedef typename type_alloc_type::const_pointer		const_pointer;
 			typedef typename type_alloc_type::reference			reference;
 			typedef typename type_alloc_type::const_reference	const_reference;
-			typedef typename tree_type::iterator				iterator;
+			typedef typename tree_type::const_iterator			iterator;
 			typedef typename tree_type::const_iterator			const_iterator;
 			typedef typename tree_type::reverse_iterator		reverse_iterator;
 			typedef typename tree_type::const_reverse_iterator	const_reverse_iterator;

@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 22:04:43 by nosterme          #+#    #+#             */
-/*   Updated: 2022/11/30 14:49:43 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:33:04 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,14 +214,14 @@ struct rb_tree_const_iterator
 	{
 		rb_tree_const_iterator	tmp( *this );
 
-		this->m_current = rb_tree_increment( this->m_current );
+		this->m_current = rb_tree_increment( const_cast< rb_tree_node_base * >( this->m_current ) );
 		return ( tmp );
 	}
 	rb_tree_const_iterator		operator--( int )
 	{
 		rb_tree_const_iterator	tmp( *this );
 
-		this->m_current = rb_tree_decrement( this->m_current );
+		this->m_current = rb_tree_decrement( const_cast< rb_tree_node_base * >( this->m_current ) );
 		return ( tmp );
 	}
 
