@@ -9,25 +9,32 @@
 /*   Updated: 2022/09/12 15:55:33 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+/*
 #include <memory>
 #include <iostream>
 #include <iterator>
-#include <vector>
-#include <map>
-#include <stack>
-#include <set>
 #include <bitset>
-#include "vector.hpp"
-#include "map.hpp"
-#include "stack.hpp"
-#include "set.hpp"
-#include "enable_if.hpp"
-#include "is_integral.hpp"
-#include "iterator_traits.hpp"
-#include "reverse_iterator.hpp"
-#include "pair.hpp"
-#include "make_pair.hpp"
+#ifndef SWITCH
+# define SWITCH 0
+	if SWITCH
+		#include <vector>
+		#include <map>
+		#include <stack>
+		#include <set>
+		namespace ft = std;
+	else
+		#include "vector.hpp"
+		#include "map.hpp"
+		#include "stack.hpp"
+		#include "set.hpp"
+		#include "enable_if.hpp"
+		#include "is_integral.hpp"
+		#include "iterator_traits.hpp"
+		#include "reverse_iterator.hpp"
+		#include "pair.hpp"
+		#include "make_pair.hpp"
+	#endif
+#endif
 #include "tests/myallocator.hpp"
 #include "tests/mystruct.hpp"
 #include "tests/mycompare.hpp"
@@ -43,6 +50,22 @@ int	main( void )
 	mapcit = mapit;
 
 	std::cout << mapcit->second << std::endl;
+
+	ft::map< ft::pair< int, long double >, int >	m_pair;
+	ft::map< int, char >					m_int;
+	ft::map< double, char >					m_char;
+
+	std::cout << "pair:\t" << m_pair.max_size() << std::endl;
+	std::cout << "int:\t" << m_int.max_size() << std::endl;
+	std::cout << "char:\t" << m_char.max_size() << std::endl;
+
+	ft::set< ft::pair< long, int > >	s_pair;
+	ft::set< int >						s_int;
+	ft::set< char >						s_char;
+
+	std::cout << "pair:\t" << s_pair.max_size() << std::endl;
+	std::cout << "int:\t" << s_int.max_size() << std::endl;
+	std::cout << "char:\t" << s_char.max_size() << std::endl;
 
 	ft::set< int >				set;
 	ft::set< int > const		set_const;
@@ -119,14 +142,15 @@ int	main( void )
 	std::cout << std::endl;
 
 
-	return ( 0 );
-}
 
-/*
+	return ( 0 );
+}*/
+
+
 #include <iostream>
 #include <string>
 #include <deque>
-#if 0 //CREATE A REAL STL EXAMPLE
+#if SWITCH //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -151,7 +175,7 @@ struct Buffer
 #define COUNT (MAX_RAM / (int)sizeof(Buffer))
 
 template<typename T>
-class MutantStack : public std::stack<T>
+class MutantStack : public ft::stack<T>
 {
 public:
 	MutantStack() {}
@@ -163,7 +187,7 @@ public:
 	}
 	~MutantStack() {}
 
-	typedef typename std::stack<T>::container_type::iterator iterator;
+	typedef typename ft::stack<T>::container_type::iterator iterator;
 
 	iterator begin() { return this->c.begin(); }
 	iterator end() { return this->c.end(); }
@@ -180,12 +204,12 @@ int main(int argc, char** argv) {
 	const int seed = atoi(argv[1]);
 	srand(seed);
 
-	std::vector<std::string> vector_str;
-	std::vector<int> vector_int;
-	std::stack<int> stack_int;
-	std::vector<Buffer> vector_buffer;
-	std::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
-	std::map<int, int> map_int;
+	ft::vector<std::string> vector_str;
+	ft::vector<int> vector_int;
+	ft::stack<int> stack_int;
+	ft::vector<Buffer> vector_buffer;
+	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+	ft::map<int, int> map_int;
 
 	for (int i = 0; i < COUNT; i++)
 	{
@@ -197,7 +221,7 @@ int main(int argc, char** argv) {
 		const int idx = rand() % COUNT;
 		vector_buffer[idx].idx = 5;
 	}
-	std::vector<Buffer>().swap(vector_buffer);
+	ft::vector<Buffer>().swap(vector_buffer);
 
 	try
 	{
@@ -215,7 +239,7 @@ int main(int argc, char** argv) {
 	
 	for (int i = 0; i < COUNT; ++i)
 	{
-		map_int.insert(std::make_pair(rand(), rand()));
+		map_int.insert(ft::make_pair(rand(), rand()));
 	}
 
 	int sum = 0;
@@ -227,7 +251,7 @@ int main(int argc, char** argv) {
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
 
 	{
-		std::map<int, int> copy = map_int;
+		ft::map<int, int> copy = map_int;
 	}
 	MutantStack<char> iterable_stack;
 	for (char letter = 'a'; letter <= 'z'; letter++)
@@ -239,4 +263,4 @@ int main(int argc, char** argv) {
 	std::cout << std::endl;
 	return (0);
 }
-*/
+
