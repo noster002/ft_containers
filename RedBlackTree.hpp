@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 22:04:43 by nosterme          #+#    #+#             */
-/*   Updated: 2022/12/02 17:33:04 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/12/06 15:27:28 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,12 @@ struct rb_tree_const_iterator
 		if ( this != &rhs )
 			this->m_current = rhs.m_current;
 		return ( *this );
+	}
+
+	iterator					m_const_cast( void ) const
+	{
+		return ( iterator( static_cast< rb_tree_node< Val > * >\
+				 		   ( const_cast< rb_tree_node_base * >( m_current ) ) ) );
 	}
 
 	reference					operator*( void ) const
@@ -670,6 +676,11 @@ class rb_tree
 			}
 			return ( position );
 		}
+		const_iterator					insert( const_iterator position, \
+												value_type const & value )
+		{
+			return ( const_iterator( this->insert( position.m_const_cast(), value ) ) );
+		}
 		void						erase( iterator position )
 		{
 			node_ptr	node = static_cast< node_ptr >\
@@ -678,6 +689,11 @@ class rb_tree
 
 			this->m_destroy_node( node );
 			--( this->m_alloc.m_node_count );
+			return ;
+		}
+		void						erase( const_iterator position )
+		{
+			this->erase( position.m_const_cast() );
 			return ;
 		}
 		void						clear( void )
@@ -850,41 +866,41 @@ class rb_tree
 // compare
 
 template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator==( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
+bool		operator==( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs )
 {
 	return ( ( lhs.size() == rhs.size() ) && \
 			   ft::equal( lhs.begin(), lhs.end(), rhs.begin() ) );
 }
 template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator!=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
+bool		operator!=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs )
 {
 	return ( !( lhs == rhs ) );
 }
 
 template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator<( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
-					   rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
+bool		operator<( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & lhs,\
+					   rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs )
 {
 	return ( ft::lexicographical_compare( lhs.begin(), lhs.end(), \
 										  rhs.begin(), rhs.end() ) );
 }
 template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator<=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
+bool		operator<=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs )
 {
 	return ( !( rhs < lhs ) );
 }
 template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator>( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
-					   rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
+bool		operator>( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & lhs,\
+					   rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs )
 {
 	return ( ( rhs < lhs ) );
 }
 template< typename Key, typename Val, typename KeyOfValue, typename Compare, typename Allocator >
-bool		operator>=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & lhs,\
-						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > & rhs )
+bool		operator>=( rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & lhs,\
+						rb_tree< Key, Val, KeyOfValue, Compare, Allocator > const & rhs )
 {
 	return ( !( lhs < rhs ) );
 }

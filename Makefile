@@ -2,7 +2,6 @@ CXX				= c++
 CXXFLAGS		= -Wall -Werror -Wextra -std=c++98 -pedantic-errors
 RM				= rm -f
 
-NAME			= compare
 FTEXE			= ftexe
 STDEXE			= stdexe
 
@@ -16,7 +15,20 @@ STDOBJ			= $(STDSRC:%.cpp=$(STDODIR)/%.o)
 
 OBJ				= $(FTOBJ) $(STDOBJ)
 
-all:			ftexe stdexe $(NAME)
+NAME			= diff.txt
+
+DIFF			= diff -u -I 'execution time: '
+
+FTTXT			= ft.txt
+STDTXT			= std.txt
+
+ARG				= 42
+
+TIME			= tail -n 3
+
+all:			exe diff
+
+exe:			$(FTEXE) $(STDEXE)
 
 $(FTEXE):		CXXFLAGS += -DSWITCH=0
 $(FTEXE):		$(FTOBJ)
@@ -26,7 +38,16 @@ $(STDEXE):		CXXFLAGS += -DSWITCH=1
 $(STDEXE):		$(STDOBJ)
 				$(CXX) -o $@ $^ $(CXXFLAGS)
 
-$(NAME):
+diff:			$(NAME)
+
+$(NAME):		$(FTTXT) $(STDTXT)
+				$(DIFF) $(FTTXT) $(STDTXT) > $@
+
+$(FTTXT):		$(FTEXE)
+				./$^ $(ARG) > $@
+
+$(STDTXT):		$(STDEXE)
+				./$^ $(ARG) > $@
 
 $(FTODIR)/%.o:	%.cpp
 				$(CXX) -o $@ -c $^ $(CXXFLAGS)
@@ -34,11 +55,23 @@ $(FTODIR)/%.o:	%.cpp
 $(STDODIR)/%.o:	%.cpp
 				$(CXX) -o $@ -c $^ $(CXXFLAGS)
 
+time:			$(FTTXT) $(STDTXT)
+				$(TIME) $(FTTXT) $(STDTXT)
+
 clean:
 				$(RM) $(OBJ)
 
-fclean:			clean
-				$(RM) $(NAME) $(FTEXE) $(STDEXE)
+execlean:		clean
+				$(RM) $(FTEXE) $(STDEXE)
+
+diffclean:
+				$(RM) $(NAME) $(FTTXT) $(STDTXT)
+
+fclean:			clean execlean diffclean
+
+exere:			execlean exe
+
+diffre:			diffclean diff
 
 re:				fclean all
 

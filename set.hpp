@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 12:48:23 by nosterme          #+#    #+#             */
-/*   Updated: 2022/12/02 17:29:53 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/12/06 15:46:06 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,8 +348,8 @@ namespace ft
 	// swap
 
 	template< typename Key, typename Compare, typename Allocator >
-	void		swap( set< Key, Compare, Allocator > const & lhs,\
-					  set< Key, Compare, Allocator > const & rhs )
+	void		swap( set< Key, Compare, Allocator > & lhs,\
+					  set< Key, Compare, Allocator > & rhs )
 	{
 		lhs.swap( rhs );
 		return ;

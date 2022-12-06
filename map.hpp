@@ -28,11 +28,11 @@ namespace ft
 	class map;
 
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool			operator==( map< Key, T, Compare, Allocator > & lhs,\
-								map< Key, T, Compare, Allocator > & rhs );
+	bool			operator==( map< Key, T, Compare, Allocator > const & lhs,\
+								map< Key, T, Compare, Allocator > const & rhs );
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool			operator<( map< Key, T, Compare, Allocator > & lhs,\
-							   map< Key, T, Compare, Allocator > & rhs );
+	bool			operator<( map< Key, T, Compare, Allocator > const & lhs,\
+							   map< Key, T, Compare, Allocator > const & rhs );
 
 }
 
@@ -364,10 +364,10 @@ namespace ft
 
 		private:
 
-			friend bool	operator== <>( map< Key, T, Compare, Allocator > & lhs,\
-									   map< Key, T, Compare, Allocator > & rhs );
-			friend bool	operator< <>( map< Key, T, Compare, Allocator > & lhs,\
-									  map< Key, T, Compare, Allocator > & rhs );
+			friend bool	operator== <>( map< Key, T, Compare, Allocator > const & lhs,\
+									   map< Key, T, Compare, Allocator > const & rhs );
+			friend bool	operator< <>( map< Key, T, Compare, Allocator > const & lhs,\
+									  map< Key, T, Compare, Allocator > const & rhs );
 
 			friend std::ostream &	operator<< <>( std::ostream & out, \
 												   map< Key, T, Compare, Allocator > const & rhs );
@@ -377,39 +377,39 @@ namespace ft
 	// relational operators
 
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool		operator==( map< Key, T, Compare, Allocator > & lhs,\
-							map< Key, T, Compare, Allocator > & rhs )
+	bool		operator==( map< Key, T, Compare, Allocator > const & lhs,\
+							map< Key, T, Compare, Allocator > const & rhs )
 	{
 		return ( ( lhs.m_rb_tree == rhs.m_rb_tree ) );
 	}
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool		operator!=( map< Key, T, Compare, Allocator > & lhs,\
-							map< Key, T, Compare, Allocator > & rhs )
+	bool		operator!=( map< Key, T, Compare, Allocator > const & lhs,\
+							map< Key, T, Compare, Allocator > const & rhs )
 	{
 		return ( !( lhs == rhs ) );
 	}
 
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool		operator<( map< Key, T, Compare, Allocator > & lhs,\
-						   map< Key, T, Compare, Allocator > & rhs )
+	bool		operator<( map< Key, T, Compare, Allocator > const & lhs,\
+						   map< Key, T, Compare, Allocator > const & rhs )
 	{
 		return ( ( lhs.m_rb_tree < rhs.m_rb_tree ) );
 	}
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool		operator<=( map< Key, T, Compare, Allocator > & lhs,\
-							map< Key, T, Compare, Allocator > & rhs )
+	bool		operator<=( map< Key, T, Compare, Allocator > const & lhs,\
+							map< Key, T, Compare, Allocator > const & rhs )
 	{
 		return ( !( rhs < lhs ) );
 	}
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool		operator>( map< Key, T, Compare, Allocator > & lhs,\
-						   map< Key, T, Compare, Allocator > & rhs )
+	bool		operator>( map< Key, T, Compare, Allocator > const & lhs,\
+						   map< Key, T, Compare, Allocator > const & rhs )
 	{
 		return ( ( rhs < lhs ) );
 	}
 	template< typename Key, typename T, typename Compare, typename Allocator >
-	bool		operator>=( map< Key, T, Compare, Allocator > & lhs,\
-							map< Key, T, Compare, Allocator > & rhs )
+	bool		operator>=( map< Key, T, Compare, Allocator > const & lhs,\
+							map< Key, T, Compare, Allocator > const & rhs )
 	{
 		return ( !( lhs < rhs ) );
 	}

@@ -80,7 +80,7 @@ namespace ft
 					bool >::type* = NULL )\
 			: VectorBase< T, Allocator >( alloc )
 			{
-				this->setBase( last - first );
+				this->setBase( size_type( std::distance( first, last ) ) );
 				this->iteratorInitialize( first, last );
 				return ;
 			}
