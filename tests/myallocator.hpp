@@ -6,7 +6,7 @@
 /*   By: nosterme <nosterme@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 23:58:15 by nosterme          #+#    #+#             */
-/*   Updated: 2022/10/27 18:37:47 by nosterme         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:58:27 by nosterme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MYALLOCATOR_HPP
 # include <cstdlib>
 # include <new>
+# include <limits>
 
 template< typename T >
 struct	myallocator

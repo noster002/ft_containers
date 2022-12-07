@@ -417,7 +417,7 @@ namespace ft
 			void		resize( size_type count, \
 								value_type const & value = value_type() )
 			{
-				if ( count <= this->size() )
+				if ( count < this->size() )
 					this->erase( ( this->begin() + count ), this->end() );
 				else if ( count > this->size() )
 					this->insert( ( this->end() ), \
