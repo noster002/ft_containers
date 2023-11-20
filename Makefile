@@ -8,7 +8,7 @@ STDEXE			= stdexe
 FTODIR			= ftobj
 STDODIR			= stdobj
 
-FTSRC			= main.cpp RedBlackTree.cpp
+FTSRC			= main.cpp
 STDSRC			= main.cpp
 FTOBJ			= $(FTSRC:%.cpp=$(FTODIR)/%.o)
 STDOBJ			= $(STDSRC:%.cpp=$(STDODIR)/%.o)

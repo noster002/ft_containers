@@ -10,7 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RedBlackTree.hpp"
+/*
+ * unused file
+ * contains the logic of rebalancing a red black tree
+ * a copy of this file is found at the beginning of RedBlackTree.hpp
+ */
 
 rb_tree_node_base *	rb_tree_increment( rb_tree_node_base * node )
 {
