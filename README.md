@@ -4,7 +4,7 @@
 C++ collection of recoded templates from the C++ standard library
 
 All of them are in the namespace _ft_ and can be called like `ft::<template>`.
-They contain all features (if not mentioned otherwise) that are in the C++98 specification (even deprecated ones).
+They contain all features (if not mentioned otherwise) that are part of the C++98 specification (even deprecated ones).
 
 ### Containers
 
