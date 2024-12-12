@@ -8,7 +8,7 @@ They contain all features (if not mentioned otherwise) that are part of the C++9
 
 ### Containers
 
-+ vector (without vector<bool> specialisation)
++ vector (without `vector<bool>` specialisation)
 + stack (based on my own vector)
 + map (based on a red black tree)
 + set (based on a red black tree)
